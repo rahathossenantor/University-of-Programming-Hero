@@ -6,3 +6,8 @@ export type TUser = {
     status: "in-progress" | "blocked",
     isDeleted: boolean
 };
+
+export type TTempUser = {
+    id: string,
+    password: string
+};
