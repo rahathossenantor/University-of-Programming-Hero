@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import { UserServices } from "./user.service";
+import { UserServices } from "./user.services";
+import { TError } from "../../../app.interface";
 
 const createStudent = async (req: Request, res: Response) => {
     try {
@@ -12,13 +13,13 @@ const createStudent = async (req: Request, res: Response) => {
             message: "Student created successfully",
             data: dbResponse
         });
-    } catch (err: any) {
+    } catch (err: unknown) {
         res.status(500).json({
             success: false,
-            message: err.message || "Something went wrong!",
+            message: (err as TError).message || "Something went wrong!",
             error: err
         });
-    };
+    }
 };
 
 export const UserControllers = {
