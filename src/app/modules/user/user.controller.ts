@@ -4,8 +4,7 @@ import { TError } from "../../../app.interface";
 
 const createStudent = async (req: Request, res: Response) => {
     try {
-        const { student, password } = req.body;
-
+        const { password, student } = req.body;
         const dbResponse = await UserServices.createStudentIntoDB(password, student);
 
         res.status(200).json({

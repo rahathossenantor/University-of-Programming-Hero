@@ -7,9 +7,7 @@ import { TName, TParents, TGuardian, TStudent, TStudentModel, TStudentMethods } 
 const nameSchema = new Schema<TName>({
     firstName: {
         type: String,
-        required: [true, "First name is required!"],
-        minlength: [2, "First name must be at least 2 characters long."],
-        maxlength: [20, "First name cannot exceed 20 characters."],
+        required: true,
         validate: {
             validator: (fName: string) => {
                 const splittedName = fName.trim().split(" ");
@@ -21,14 +19,11 @@ const nameSchema = new Schema<TName>({
         }
     },
     middleName: {
-        type: String,
-        maxlength: [20, "Middle name cannot exceed 20 characters."]
+        type: String
     },
     lastName: {
         type: String,
-        required: [true, "Last name is required!"],
-        minlength: [2, "Last name must be at least 2 characters long."],
-        maxlength: [20, "Last name cannot exceed 20 characters."],
+        required: true,
         validate: {
             validator: (lName: string) => {
                 const splittedName = lName.trim().split(" ");
@@ -44,42 +39,46 @@ const nameSchema = new Schema<TName>({
 const parentsSchema = new Schema<TParents>({
     fatherName: {
         type: String,
-        required: [true, "Father's name is required!"]
+        required: true
     },
     fatherOccupation: {
         type: String,
-        required: [true, "Father's occupation is required!"]
+        required: true
     },
     fatherContactNo: {
         type: String,
-        required: [true, "Father's contact number is required!"]
+        required: true
     },
     motherName: {
         type: String,
-        required: [true, "Mother's name is required!"]
+        required: true
     },
     motherOccupation: {
         type: String,
-        required: [true, "Mother's occupation is required!"]
+        required: true
     },
     motherContactNo: {
         type: String,
-        required: [true, "Mother's contact number is required!"]
+        required: true
     }
 });
 
 const guardianSchema = new Schema<TGuardian>({
     name: {
         type: String,
-        required: [true, "Guardian's name is required!"]
+        required: true
     },
     occupation: {
         type: String,
-        required: [true, "Guardian's occupation is required!"]
+        required: true
     },
     contactNo: {
         type: String,
-        required: [true, "Guardian's contact number is required!"]
+        required: true
+    },
+    address: {
+        type: String,
+        required: true
     }
 });
 
@@ -88,31 +87,40 @@ const studentSchema = new Schema<TStudent, TStudentModel, TStudentMethods>({
         type: String,
         unique: true
     },
-    password: { type: String },
+    user: {
+        type: Schema.Types.ObjectId,
+        required: true,
+        unique: true,
+        ref: "User"
+    },
+    password: {
+        type: String,
+        required: true
+    },
     name: {
         type: nameSchema,
-        required: [true, "Student name is required!"]
+        required: true
     },
     gender: {
         type: String,
         enum: ["male", "female", "other"],
-        required: [true, "Gender is required!"]
+        required: true
     },
     dateOfBirth: {
         type: String,
-        required: [true, "Date of birth is required!"]
+        required: true
     },
     email: {
         type: String,
-        required: [true, "Email is required!"]
+        required: true
     },
     contactNo: {
         type: String,
-        required: [true, "Contact number is required!"]
+        required: true
     },
     emergencyContactNo: {
         type: String,
-        required: [true, "Emergency contact number is required!"]
+        required: true
     },
     bloodGroup: {
         type: String,
@@ -136,15 +144,15 @@ const studentSchema = new Schema<TStudent, TStudentModel, TStudentMethods>({
     },
     permanentAddress: {
         type: String,
-        required: [true, "Permanent address is required!"]
+        required: true
     },
     parents: {
         type: parentsSchema,
-        required: [true, "Parent's information is required!"]
+        required: true
     },
     guardian: {
         type: guardianSchema,
-        required: [true, "Guardian's information is required!"]
+        required: true
     },
     avatar: {
         type: String
