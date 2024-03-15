@@ -52,7 +52,6 @@ export type TStudent = {
     parents: TParents;
     guardian: TGuardian;
     avatar?: string;
-    isActive: "active" | "blocked";
     isDeleted: boolean;
 };
 

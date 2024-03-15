@@ -2,6 +2,7 @@ import { TUser } from "./user.interface";
 import { User } from "./user.model";
 import config from "../../config";
 import { TStudent } from "../student/student.interface";
+import { Student } from "../student/student.model";
 
 const createStudentIntoDB = async (password: string, studentData: TStudent) => {
     const tempUser: Partial<TUser> = {};
@@ -11,11 +12,12 @@ const createStudentIntoDB = async (password: string, studentData: TStudent) => {
 
     // creating user in database
     const dbRes = await User.create(tempUser);
-    console.log(dbRes);
 
     if (Object.keys(dbRes).length) {
         studentData.id = dbRes.id;
-        studentData.user = dbRes._id
+        studentData.user = dbRes._id;
+        const newStudent = await Student.create(studentData);
+        return newStudent;
     }
 };
 

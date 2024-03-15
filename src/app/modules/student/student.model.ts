@@ -1,8 +1,7 @@
 import { Schema, model } from "mongoose";
 import { TName, TParents, TGuardian, TStudent, TStudentModel, TStudentMethods } from "./student.interface";
-// import bcrypt from "bcrypt";
-// import { NextFunction } from "express";
-// import config from "../../config";
+import bcrypt from "bcrypt";
+import config from "../../config";
 
 const nameSchema = new Schema<TName>({
     firstName: {
@@ -157,11 +156,6 @@ const studentSchema = new Schema<TStudent, TStudentModel, TStudentMethods>({
     avatar: {
         type: String
     },
-    isActive: {
-        type: String,
-        enum: ["active", "blocked"],
-        default: "active"
-    },
     isDeleted: { type: Boolean, default: false }
 }, {
     toJSON: {
@@ -180,37 +174,38 @@ studentSchema.methods.isUserExist = async function (id: string) {
 };
 
 // documents middlewares
-// studentSchema.pre("save", async function (next: NextFunction) {
-//     const student = this;
-//     // encrypting student's password
-//     student.password = await bcrypt.hash(student.password, Number(config.bcrypt_salt_rounds));
-//     next();
-// });
+studentSchema.pre("save", async function (next) {
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    const student = this;
+    // encrypting student's password
+    student.password = await bcrypt.hash(student.password, Number(config.bcrypt_salt_rounds));
+    next();
+});
 
-// studentSchema.post("save", function (doc, next: NextFunction) {
-//     doc.password = "";
-//     next();
-// });
+studentSchema.post("save", function (student, next) {
+    student.password = "";
+    next();
+});
 
 // query middlewares
-// studentSchema.pre("find", function (next: NextFunction) {
-//     this.find({ isDeleted: { $ne: true } });
-//     next();
-// });
+studentSchema.pre("find", function (next) {
+    this.find({ isDeleted: { $ne: true } });
+    next();
+});
 
-// studentSchema.pre("findOne", function (next: NextFunction) {
-//     this.find({ isDeleted: { $ne: true } });
-//     next();
-// });
+studentSchema.pre("findOne", function (next) {
+    this.find({ isDeleted: { $ne: true } });
+    next();
+});
 
-// studentSchema.pre("aggregate", function (next: NextFunction) {
-//     this.pipeline().unshift(
-//         {
-//             $match: { isDeleted: { $ne: true } }
-//         }
-//     );
-//     next();
-// });
+studentSchema.pre("aggregate", function (next) {
+    this.pipeline().unshift(
+        {
+            $match: { isDeleted: { $ne: true } }
+        }
+    );
+    next();
+});
 
 // student model
 const Student = model<TStudent, TStudentModel>("student", studentSchema);
