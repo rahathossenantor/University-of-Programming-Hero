@@ -1,7 +1,5 @@
 import { Schema, model } from "mongoose";
 import { TName, TParents, TGuardian, TStudent, TStudentModel, TStudentMethods } from "./student.interface";
-import bcrypt from "bcrypt";
-import config from "../../config";
 
 const nameSchema = new Schema<TName>({
     firstName: {
@@ -92,10 +90,6 @@ const studentSchema = new Schema<TStudent, TStudentModel, TStudentMethods>({
         unique: true,
         ref: "User"
     },
-    password: {
-        type: String,
-        required: true
-    },
     name: {
         type: nameSchema,
         required: true
@@ -172,20 +166,6 @@ studentSchema.methods.isUserExist = async function (id: string) {
     const existingStudent = await Student.findOne({ id });
     return existingStudent;
 };
-
-// documents middlewares
-studentSchema.pre("save", async function (next) {
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
-    const student = this;
-    // encrypting student's password
-    student.password = await bcrypt.hash(student.password, Number(config.bcrypt_salt_rounds));
-    next();
-});
-
-studentSchema.post("save", function (student, next) {
-    student.password = "";
-    next();
-});
 
 // query middlewares
 studentSchema.pre("find", function (next) {

@@ -29,7 +29,6 @@ const GuardianSchema = z.object({
 const zodStudentValidationSchema = z.object({
     id: z.string(),
     user: z.string(),
-    password: z.string(),
     name: NameSchema,
     gender: z.enum(["male", "female", "other"]),
     dateOfBirth: z.string(),
