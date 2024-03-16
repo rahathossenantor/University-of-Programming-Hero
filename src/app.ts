@@ -3,10 +3,11 @@ import cors from "cors";
 import { StudentRoutes } from "./app/modules/student/student.routes";
 import { UserRoutes } from "./app/modules/user/user.routes";
 import globalErrorHandler from "./app/middlewares/globalErrorHandler";
+import notFound from "./app/middlewares/notFound";
 
 const app: Application = express();
 
-// parsers
+// parsers (middlewares)
 app.use(express.json());
 app.use(cors());
 
@@ -18,6 +19,8 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Welcome to The University of Programming Hero");
 });
 
+// not found route
+app.use(notFound);
 // global error handler
 app.use(globalErrorHandler);
 
