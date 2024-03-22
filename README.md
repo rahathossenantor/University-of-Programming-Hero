@@ -1,4 +1,4 @@
-A simple hello world express server. Run it in the terminal with
+A proffesional backend express server. Run it in the terminal with
 
 ```
 npm run start
