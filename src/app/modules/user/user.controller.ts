@@ -6,6 +6,7 @@ import httpStatus from "http-status";
 const createStudent = catchAsync(async (req, res) => {
     const { password, student } = req.body;
     const dbResponse = await UserServices.createStudentIntoDB(password, student);
+    
     res.status(httpStatus.OK).json({
         success: true,
         message: "Student created successfully",

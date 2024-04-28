@@ -24,7 +24,20 @@ const getAllAcademicSemesters = catchAsync(async (req, res) => {
     });
 });
 
+// get single academic semester from academic semesters collection
+const getSingleAcademicSemester = catchAsync(async (req, res) => {
+    const { academicSemesterId } = req.params;
+    const academicSemester = await AcademicSemesterServices.getSingleAcademicSemesterFromDB(academicSemesterId);
+
+    res.status(httpStatus.OK).json({
+        success: true,
+        message: (academicSemester ? "Academic semester data retrived successfully" : "No academic semester found!"),
+        data: academicSemester
+    });
+});
+
 export const AcademicSemesterControllers = {
     createAcademicSemester,
-    getAllAcademicSemesters
+    getAllAcademicSemesters,
+    getSingleAcademicSemester
 };

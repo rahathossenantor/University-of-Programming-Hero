@@ -5,6 +5,7 @@ import catchAsync from "../../utils/catchAsync";
 // get all students from students collection
 const getAllStudents = catchAsync(async (req, res) => {
     const students = await StudentServices.getAllStudentsFromDB();
+
     res.status(httpStatus.OK).json({
         success: true,
         message: "Students retrived successfully",
@@ -16,6 +17,7 @@ const getAllStudents = catchAsync(async (req, res) => {
 const getSingleStudent = catchAsync(async (req, res) => {
     const { studentId } = req.params;
     const student = await StudentServices.getSingleStudentFromDB(studentId);
+
     res.status(httpStatus.OK).json({
         success: true,
         message: (student ? "Student retrived successfully" : "No student found!"),
@@ -27,6 +29,7 @@ const getSingleStudent = catchAsync(async (req, res) => {
 const deleteStudent = catchAsync(async (req, res) => {
     const { studentId } = req.params;
     const dbResponse = await StudentServices.deleteStudentFromDB(studentId);
+    
     res.status(httpStatus.OK).json({
         success: true,
         message: "Student retrived successfully",
