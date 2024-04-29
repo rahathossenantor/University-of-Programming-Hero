@@ -8,7 +8,7 @@ const getAllStudents = catchAsync(async (req, res) => {
 
     res.status(httpStatus.OK).json({
         success: true,
-        message: "Students retrived successfully",
+        message: "Students retrived successfully.",
         data: students
     });
 });
@@ -20,7 +20,7 @@ const getSingleStudent = catchAsync(async (req, res) => {
 
     res.status(httpStatus.OK).json({
         success: true,
-        message: (student ? "Student retrived successfully" : "No student found!"),
+        message: (student ? "Student retrived successfully." : "No student found!"),
         data: student
     });
 });
@@ -32,7 +32,7 @@ const deleteStudent = catchAsync(async (req, res) => {
     
     res.status(httpStatus.OK).json({
         success: true,
-        message: "Student retrived successfully",
+        message: "Student retrived successfully.",
         data: dbResponse
     });
 });

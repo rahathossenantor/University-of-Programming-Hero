@@ -9,7 +9,7 @@ const createStudent = catchAsync(async (req, res) => {
     
     res.status(httpStatus.OK).json({
         success: true,
-        message: "Student created successfully",
+        message: "Student created successfully.",
         data: dbResponse
     });
 });
