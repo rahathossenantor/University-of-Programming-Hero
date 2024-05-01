@@ -164,7 +164,8 @@ const studentSchema = new Schema<TStudent, TStudentModel, TStudentMethods>({
 
 // mongoose virtuals
 studentSchema.virtual("fullName").get(function () {
-    return `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`;
+    const fullName: string = `${this.name.firstName}${this.name.middleName && ` ${this.name.middleName}`} ${this.name.lastName}`;
+    return fullName;
 });
 
 studentSchema.methods.isUserExist = async function (id: string) {
