@@ -7,7 +7,9 @@ const router = Router();
 
 router.post(
     "/create-academic-semester",
-    validateRequest(AcademicSemesterValidations.AcademicSemesterCreationValidationSchema),
+    validateRequest(
+        AcademicSemesterValidations.AcademicSemesterCreationValidationSchema
+    ),
     AcademicSemesterControllers.createAcademicSemester
 );
 router.patch(
