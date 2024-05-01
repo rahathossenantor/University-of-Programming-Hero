@@ -1,11 +1,11 @@
+import { TAcademicSemester } from "../academicSemester/academicSemester.interface";
+import { AcademicSemester } from "../academicSemester/academicSemester.model";
+import { TStudent } from "../student/student.interface";
+import { Student } from "../student/student.model";
+import { generateStudentId } from "./user.utils";
 import { TUser } from "./user.interface";
 import { User } from "./user.model";
 import config from "../../config";
-import { TStudent } from "../student/student.interface";
-import { Student } from "../student/student.model";
-import { AcademicSemester } from "../academicSemester/academicSemester.model";
-import { generateStudentId } from "./user.utils";
-import { TAcademicSemester } from "../academicSemester/academicSemester.interface";
 
 const createStudentIntoDB = async (password: string, payload: TStudent) => {
     const userData: Partial<TUser> = {};
@@ -16,7 +16,7 @@ const createStudentIntoDB = async (password: string, payload: TStudent) => {
     const academicSemester = await AcademicSemester.findById(payload.admissionSemester);
     userData.id = await generateStudentId(academicSemester as TAcademicSemester);
 
-    // creating user in database
+    // create an user
     const dbRes = await User.create(userData);
 
     if (Object.keys(dbRes).length) {

@@ -8,7 +8,7 @@ const createAcademicSemester = catchAsync(async (req, res) => {
 
     res.status(httpStatus.OK).json({
         success: true,
-        message: "Academic semester created.",
+        message: "Academic semester is created.",
         data: dbRes
     });
 });
@@ -18,7 +18,7 @@ const updateAcademicSemester = catchAsync(async (req, res) => {
     const { academicSemesterId } = req.params;
     const dbRes = await AcademicSemesterServices.updateAcademicSemesterIntoDB(
         academicSemesterId,
-        req.body,
+        req.body
     );
 
     res.status(httpStatus.OK).json({
@@ -28,26 +28,26 @@ const updateAcademicSemester = catchAsync(async (req, res) => {
     });
 });
 
-// get all academic semesters from the academic semesters collection
+// get all academic semesters
 const getAllAcademicSemesters = catchAsync(async (req, res) => {
-    const academicSemesters = await AcademicSemesterServices.getAllAcademicSemestersFromDB();
+    const dbRes = await AcademicSemesterServices.getAllAcademicSemestersFromDB();
 
     res.status(httpStatus.OK).json({
         success: true,
-        message: (academicSemesters.length ? "Academic semesters retrived successfully." : "No academic semester found!"),
-        data: academicSemesters
+        message: (dbRes.length ? "Academic semesters are retrived successfully." : "No academic semester found!"),
+        data: dbRes
     });
 });
 
-// get single academic semester from academic semesters collection
+// get single academic semester
 const getSingleAcademicSemester = catchAsync(async (req, res) => {
     const { academicSemesterId } = req.params;
-    const academicSemester = await AcademicSemesterServices.getSingleAcademicSemesterFromDB(academicSemesterId);
+    const dbRes = await AcademicSemesterServices.getSingleAcademicSemesterFromDB(academicSemesterId);
 
     res.status(httpStatus.OK).json({
         success: true,
-        message: (academicSemester ? "Academic semester data retrived successfully." : "No academic semester found!"),
-        data: academicSemester
+        message: (dbRes ? "Academic semester is retrived successfully." : "No academic semester found!"),
+        data: dbRes
     });
 });
 
