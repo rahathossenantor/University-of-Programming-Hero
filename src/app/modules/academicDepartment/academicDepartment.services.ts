@@ -28,7 +28,7 @@ const getSingleAcademicDepartmentFromDB = async (id: string) => {
     return dbRes;
 };
 
-export const AcademicFacultyServices = {
+export const AcademicDepartmentServices = {
     createAcademicDepartmentIntoDB,
     updateAcademicDepartmentIntoDB,
     getAllAcademicDepartmentsFromDB,
