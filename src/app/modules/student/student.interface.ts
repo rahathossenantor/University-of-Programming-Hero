@@ -43,7 +43,8 @@ export type TStudent = {
     gender: "male" | "female" | "other";
     dateOfBirth: string;
     email: string;
-    admissionSemester: Types.ObjectId,
+    academicSemester: Types.ObjectId,
+    academicDepartment: Types.ObjectId,
     contactNo: string;
     emergencyContactNo: string;
     bloodGroup?: TBloodGroup;

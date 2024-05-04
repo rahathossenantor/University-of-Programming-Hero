@@ -17,9 +17,9 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Welcome to The University of Programming Hero");
 });
 
-// not found route
-app.use(notFound);
 // global error handler
 app.use(globalErrorHandler);
+// not found route
+app.use(notFound);
 
 export default app;

@@ -1,12 +1,18 @@
 import { Student } from "./student.model";
 
 const getAllStudentsFromDB = async () => {
-    const dbRes = await Student.find();
+    const dbRes = await Student.find()
+        .populate("academicSemester")
+        .populate({ path: "academicDepartment", populate: { path: "academicFaculty" } })
+        .populate("user");
     return dbRes;
 };
 
 const getSingleStudentFromDB = async (id: string) => {
-    const dbRes = await Student.findOne({ id });
+    const dbRes = await Student.findOne({ id })
+        .populate("academicSemester")
+        .populate({ path: "academicDepartment", populate: { path: "academicFaculty" } })
+        .populate("user");
     return dbRes;
 };
 

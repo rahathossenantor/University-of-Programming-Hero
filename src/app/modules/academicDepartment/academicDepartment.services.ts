@@ -18,13 +18,13 @@ const updateAcademicDepartmentIntoDB = async (
 
 // get all academic departments
 const getAllAcademicDepartmentsFromDB = async () => {
-    const dbRes = await AcademicDepartment.find();
+    const dbRes = await AcademicDepartment.find().populate("academicFaculty");
     return dbRes;
 };
 
 // get single academic department
 const getSingleAcademicDepartmentFromDB = async (id: string) => {
-    const dbRes = await AcademicDepartment.findById(id);
+    const dbRes = await AcademicDepartment.findById(id).populate("academicFaculty");
     return dbRes;
 };
 

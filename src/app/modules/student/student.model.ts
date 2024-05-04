@@ -108,9 +108,13 @@ const studentSchema = new Schema<TStudent, TStudentModel, TStudentMethods>({
         required: true,
         unique: true
     },
-    admissionSemester: {
+    academicSemester: {
         type: Schema.Types.ObjectId,
         ref: "AcademicSemester"
+    },
+    academicDepartment: {
+        type: Schema.Types.ObjectId,
+        ref: "AcademicDepartment"
     },
     contactNo: {
         type: String,
@@ -194,6 +198,6 @@ studentSchema.pre("aggregate", function (next) {
 });
 
 // student model
-const Student = model<TStudent, TStudentModel>("student", studentSchema);
+const Student = model<TStudent, TStudentModel>("Student", studentSchema);
 
 export { Student };
