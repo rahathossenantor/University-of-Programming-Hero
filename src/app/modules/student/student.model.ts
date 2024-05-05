@@ -1,5 +1,7 @@
 import { Schema, model } from "mongoose";
 import { TName, TParents, TGuardian, TStudent, TStudentModel, TStudentMethods } from "./student.interface";
+import AppError from "../../errors/AppError";
+import httpStatus from "http-status";
 
 const nameSchema = new Schema<TName>({
     firstName: {
@@ -183,8 +185,14 @@ studentSchema.pre("find", function (next) {
     next();
 });
 
-studentSchema.pre("findOne", function (next) {
-    this.find({ isDeleted: { $ne: true } });
+// checking is the document is exist or not
+studentSchema.pre("findOneAndUpdate", async function (next) {
+    const query = this.getQuery();
+    const isStudentExist = await Student.findOne(query);
+
+    if (!isStudentExist) {
+        throw new AppError(httpStatus.NOT_FOUND, "Student does not exist!");
+    }
     next();
 });
 

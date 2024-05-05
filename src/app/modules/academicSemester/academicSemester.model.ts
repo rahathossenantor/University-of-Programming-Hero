@@ -1,6 +1,8 @@
 import { Schema, model } from "mongoose";
 import { TAcademicSemester } from "./academicSemester.interface";
 import { academicSemesterCodes, academicSemesterNames, months } from "./academicSemester.constants";
+import AppError from "../../errors/AppError";
+import httpStatus from "http-status";
 
 // academic semester schema
 const academicSemesterSchema = new Schema<TAcademicSemester>({
@@ -49,7 +51,7 @@ academicSemesterSchema.pre("findOneAndUpdate", async function (next) {
     const isAcademicSemesterExist = await AcademicSemester.findOne(query);
 
     if (!isAcademicSemesterExist) {
-        throw new Error("Academic semester does not exist!");
+        throw new AppError(httpStatus.NOT_FOUND, "Academic semester does not exist!");
     }
     next();
 });

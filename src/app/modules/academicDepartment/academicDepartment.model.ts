@@ -25,7 +25,7 @@ academicDepartmentSchema.pre("save", async function (next) {
     next();
 });
 
-// checking is the document is exist or not before updating
+// checking is the document is exist or not
 academicDepartmentSchema.pre("findOneAndUpdate", async function (next) {
     const query = this.getQuery();
     const isAcademicDepartmentExist = await AcademicDepartment.findOne(query);

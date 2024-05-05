@@ -32,7 +32,7 @@ const deleteStudent = catchAsync(async (req, res) => {
     
     res.status(httpStatus.OK).json({
         success: true,
-        message: "Student is retrived successfully.",
+        message: "Student is deleted successfully.",
         data: dbRes
     });
 });

@@ -1,5 +1,7 @@
 import { Schema, model } from "mongoose";
 import { TAcademicFaculty } from "./academicFaculty.interface";
+import AppError from "../../errors/AppError";
+import httpStatus from "http-status";
 
 const academicFacultySchema = new Schema<TAcademicFaculty>({
     name: {
@@ -9,13 +11,13 @@ const academicFacultySchema = new Schema<TAcademicFaculty>({
     }
 }, { timestamps: true });
 
-// checking is the document is exist or not before updating
+// checking is the document is exist or not
 academicFacultySchema.pre("findOneAndUpdate", async function (next) {
     const query = this.getQuery();
     const isAcademicFacultyExist = await AcademicFaculty.findOne(query);
 
     if (!isAcademicFacultyExist) {
-        throw new Error("Academic faculty does not exist!");
+        throw new AppError(httpStatus.NOT_FOUND, "Academic faculty does not exist!");
     }
     next();
 });
