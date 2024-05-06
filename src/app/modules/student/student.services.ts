@@ -3,6 +3,7 @@ import { Student } from "./student.model";
 import AppError from "../../errors/AppError";
 import httpStatus from "http-status";
 import { User } from "../user/user.model";
+import { TGuardian, TName, TParents, TStudent } from "./student.interface";
 
 const getAllStudentsFromDB = async () => {
     const dbRes = await Student.find()
@@ -29,6 +30,32 @@ const getSingleStudentFromDB = async (id: string) => {
     if (!dbRes) {
         throw new AppError(httpStatus.NOT_FOUND, "Student does not exist!");
     }
+    return dbRes;
+};
+
+// update student
+const updateStudentIntoDB = async (id: string, payload: Partial<TStudent>) => {
+    const { name, parents, guardian, ...remainingStudentData } = payload;
+    const modifiedStudentData: Record<string, unknown> = {
+        ...remainingStudentData
+    };
+
+    const changeValues = (data: TName | TParents | TGuardian | undefined, name: string): void => {
+        if (data && Object.keys(data).length) {
+            for (const [key, value] of Object.entries(data)) {
+                modifiedStudentData[`${name}.${key}`] = value;
+            }
+        }
+    };
+    changeValues(name, "name");
+    changeValues(parents, "parents");
+    changeValues(guardian, "guardian");
+
+    const dbRes = await Student.findOneAndUpdate(
+        { id },
+        modifiedStudentData,
+        { new: true, runValidators: true }
+    );
     return dbRes;
 };
 
@@ -69,5 +96,6 @@ const deleteStudentFromDB = async (id: string) => {
 export const StudentServices = {
     getAllStudentsFromDB,
     getSingleStudentFromDB,
+    updateStudentIntoDB,
     deleteStudentFromDB
 };
