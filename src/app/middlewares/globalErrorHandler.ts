@@ -8,6 +8,7 @@ import httpStatus from "http-status";
 import config from "../config";
 import { ZodError } from "zod";
 import handleCastError from "../errors/handleCastError";
+import handleDuplicateError from "../errors/handleDuplicateError";
 
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     // default response data
@@ -18,7 +19,11 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
         message: "Something went wrong!"
     }];
 
-    type TAssignErrorParam = typeof handleZodError | typeof handleValidationError | typeof handleCastError;
+    type TAssignErrorParam =
+        typeof handleZodError |
+        typeof handleValidationError |
+        typeof handleCastError |
+        typeof handleDuplicateError;
 
     const assignError = (errHandlerFn: TAssignErrorParam): void => {
         const simplifiedError = errHandlerFn(err);
@@ -34,6 +39,8 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
         assignError(handleValidationError);
     } else if (err?.name === "CastError") {
         assignError(handleCastError);
+    } else if (err?.code === 11000) {
+        assignError(handleDuplicateError);
     }
 
     return res.status(statusCode).json({

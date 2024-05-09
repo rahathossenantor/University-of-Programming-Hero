@@ -40,7 +40,7 @@ academicSemesterSchema.pre("save", async function (next) {
     });
 
     if (isSemesterExists) {
-        throw new Error("Academic semester is already exist!");
+        throw new AppError(httpStatus.BAD_REQUEST, `Academic semester ${this.name} ${this.year} is already exist!`);
     }
     next();
 });
