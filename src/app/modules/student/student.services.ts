@@ -7,14 +7,19 @@ import { TGuardian, TName, TParents, TStudent } from "./student.interface";
 
 const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
     const searchTerm: string = query.searchTerm as string || "";
-
-    const dbRes = await Student.find({
+    const partialSearch = Student.find({
         $or: ["name.firstName", "email"].map(field => (
             {
                 [field]: { $regex: searchTerm, $options: "i" }
             }
         ))
-    })
+    });
+
+    const filterQueries = { ...query };
+    const excludedFields: string[] = ["searchTerm"];
+    excludedFields.forEach(field => delete filterQueries[field]);
+
+    const dbRes = await partialSearch.find(filterQueries)
         .populate("academicSemester")
         .populate(
             {
