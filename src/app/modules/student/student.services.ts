@@ -7,7 +7,7 @@ import { TGuardian, TName, TParents, TStudent } from "./student.interface";
 
 const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
     const filterQueries = { ...query };
-    const excludedFields: string[] = ["searchTerm", "sort", "limit", "page"];
+    const excludedFields: string[] = ["searchTerm", "sort", "limit", "page", "fields"];
     excludedFields.forEach(field => delete filterQueries[field]);
 
     // search partially
@@ -41,7 +41,7 @@ const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
     let page: number = 1;
     let limit: number = 1;
     let skip: number = 0;
-    
+
     if (query.limit) {
         limit = Number(query.limit);
     }
@@ -50,9 +50,16 @@ const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
         skip = (page - 1) * limit;
     }
     const paginatedRes = sortedRes.skip(skip);
-    const limitedRes = await paginatedRes.limit(limit);
+    const limitedRes = paginatedRes.limit(limit);
 
-    const dbRes = limitedRes;
+    // limit fields
+    let fields: string = "-__v -isDeleted";
+    if (query.fields) {
+        fields = (query.fields as string).split(",").join(" ");
+    }
+    const limitedfieldsRes = await limitedRes.select(fields);
+
+    const dbRes = limitedfieldsRes;
     return dbRes;
 };
 
