@@ -6,8 +6,13 @@ import { User } from "../user/user.model";
 import { TGuardian, TName, TParents, TStudent } from "./student.interface";
 
 const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
+    const filterQueries = { ...query };
+    const excludedFields: string[] = ["searchTerm", "sort"];
+    excludedFields.forEach(field => delete filterQueries[field]);
+
+    // search partially
     const searchTerm: string = query.searchTerm as string || "";
-    const partialSearch = Student.find({
+    const partialSearchRes = Student.find({
         $or: ["name.firstName", "email"].map(field => (
             {
                 [field]: { $regex: searchTerm, $options: "i" }
@@ -15,11 +20,8 @@ const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
         ))
     });
 
-    const filterQueries = { ...query };
-    const excludedFields: string[] = ["searchTerm"];
-    excludedFields.forEach(field => delete filterQueries[field]);
-
-    const dbRes = await partialSearch.find(filterQueries)
+    // filter students
+    const filteredRes = partialSearchRes.find(filterQueries)
         .populate("academicSemester")
         .populate(
             {
@@ -27,6 +29,13 @@ const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
                 populate: { path: "academicFaculty" }
             }
         );
+    
+    // sort students
+    let sort: string = "-createdAt";
+    if (query.sort) {
+        sort = query.sort as string;
+    }
+    const dbRes = await filteredRes.sort(sort);
     return dbRes;
 };
 
