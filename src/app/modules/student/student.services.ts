@@ -7,7 +7,7 @@ import { TGuardian, TName, TParents, TStudent } from "./student.interface";
 
 const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
     const filterQueries = { ...query };
-    const excludedFields: string[] = ["searchTerm", "sort"];
+    const excludedFields: string[] = ["searchTerm", "sort", "limit"];
     excludedFields.forEach(field => delete filterQueries[field]);
 
     // search partially
@@ -29,13 +29,21 @@ const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
                 populate: { path: "academicFaculty" }
             }
         );
-    
+
     // sort students
     let sort: string = "-createdAt";
     if (query.sort) {
         sort = query.sort as string;
     }
-    const dbRes = await filteredRes.sort(sort);
+    const sortedRes = filteredRes.sort(sort);
+
+    // limit students
+    let limit: number = 1;
+    if (query.limit) {
+        limit = Number(query.limit);
+    }
+    const limitedRes = await sortedRes.limit(limit);
+    const dbRes = limitedRes;
     return dbRes;
 };
 
