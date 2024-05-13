@@ -4,62 +4,26 @@ import AppError from "../../errors/AppError";
 import httpStatus from "http-status";
 import { User } from "../user/user.model";
 import { TGuardian, TName, TParents, TStudent } from "./student.interface";
+import QueryBuilder from "../../builder/QueryBuilder";
+import { studentSearchableFields } from "./student.constant";
 
 const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
-    const filterQueries = { ...query };
-    const excludedFields: string[] = ["searchTerm", "sort", "limit", "page", "fields"];
-    excludedFields.forEach(field => delete filterQueries[field]);
+    const studentQuery = new QueryBuilder(
+        Student.find()
+          .populate("academicSemester")
+          .populate({
+            path: "academicDepartment",
+            populate: { path: "academicFaculty" },
+          }),
+        query
+      )
+        .search(studentSearchableFields)
+        .filter()
+        .sort()
+        .paginate()
+        .limitFields();
 
-    // search partially
-    const searchTerm: string = query.searchTerm as string || "";
-    const partialSearchRes = Student.find({
-        $or: ["name.firstName", "email"].map(field => (
-            {
-                [field]: { $regex: searchTerm, $options: "i" }
-            }
-        ))
-    });
-
-    // filter students
-    const filteredRes = partialSearchRes.find(filterQueries)
-        .populate("academicSemester")
-        .populate(
-            {
-                path: "academicDepartment",
-                populate: { path: "academicFaculty" }
-            }
-        );
-
-    // sort students
-    let sort: string = "-createdAt";
-    if (query.sort) {
-        sort = query.sort as string;
-    }
-    const sortedRes = filteredRes.sort(sort);
-
-    // paginate students
-    let page: number = 1;
-    let limit: number = 1;
-    let skip: number = 0;
-
-    if (query.limit) {
-        limit = Number(query.limit);
-    }
-    if (query.page) {
-        page = Number(query.page);
-        skip = (page - 1) * limit;
-    }
-    const paginatedRes = sortedRes.skip(skip);
-    const limitedRes = paginatedRes.limit(limit);
-
-    // limit fields
-    let fields: string = "-__v -isDeleted";
-    if (query.fields) {
-        fields = (query.fields as string).split(",").join(" ");
-    }
-    const limitedfieldsRes = await limitedRes.select(fields);
-
-    const dbRes = limitedfieldsRes;
+    const dbRes = await studentQuery.modelQuery;
     return dbRes;
 };
 
