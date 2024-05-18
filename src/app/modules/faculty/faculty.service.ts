@@ -1,5 +1,6 @@
 import QueryBuilder from "../../builder/QueryBuilder";
 import { Faculty } from "./faculty.model";
+import { TFaculty } from "./faculty.interface";
 import AppError from "../../errors/AppError";
 import httpStatus from "http-status";
 
@@ -25,7 +26,28 @@ const getSingleFacultyFromDB = async (id: string) => {
   return dbRes;
 };
 
+const updateFacultyIntoDB = async (id: string, payload: Partial<TFaculty>) => {
+  const { name, ...remainingFacultyData } = payload;
+
+  const modifiedUpdatedData: Record<string, unknown> = {
+    ...remainingFacultyData
+  };
+
+  if (name && Object.keys(name).length) {
+    for (const [key, value] of Object.entries(name)) {
+      modifiedUpdatedData[`name.${key}`] = value;
+    }
+  }
+
+  const dbRes = await Faculty.findByIdAndUpdate(id, modifiedUpdatedData, {
+    new: true,
+    runValidators: true,
+  });
+  return dbRes;
+};
+
 export const FacultyServices = {
     getAllFacultiesFromDB,
-    getSingleFacultyFromDB
+    getSingleFacultyFromDB,
+    updateFacultyIntoDB
 };
