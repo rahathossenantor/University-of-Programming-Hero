@@ -4,6 +4,7 @@ import { TFaculty } from "./faculty.interface";
 import AppError from "../../errors/AppError";
 import httpStatus from "http-status";
 
+// get all faculties
 const getAllFacultiesFromDB = async (query: Record<string, string>) => {
   const facultySearchableFields: string[] = ["name.firstName", "email"];
   const facultyQuery = new QueryBuilder(Faculty.find().populate("academicDepartment"), query)
@@ -17,6 +18,7 @@ const getAllFacultiesFromDB = async (query: Record<string, string>) => {
   return dbRes;
 };
 
+// get single faculty
 const getSingleFacultyFromDB = async (id: string) => {
   const dbRes = await Faculty.findById(id).populate("academicDepartment");
 
@@ -26,6 +28,7 @@ const getSingleFacultyFromDB = async (id: string) => {
   return dbRes;
 };
 
+// update faculty
 const updateFacultyIntoDB = async (id: string, payload: Partial<TFaculty>) => {
   const { name, ...remainingFacultyData } = payload;
 
