@@ -69,6 +69,7 @@ const updateStudentIntoDB = async (id: string, payload: Partial<TStudent>) => {
     return dbRes;
 };
 
+// delete student
 const deleteStudentFromDB = async (id: string) => {
     const session = await mongoose.startSession();
     try {
