@@ -10,6 +10,7 @@ import mongoose from "mongoose";
 import AppError from "../../errors/AppError";
 import httpStatus from "http-status";
 
+// create student
 const createStudentIntoDB = async (password: string, payload: TStudent) => {
     const userData: Partial<TUser> = {};
     userData.password = password || config.default_pass as string;

@@ -2,7 +2,7 @@ import catchAsync from "../../utils/catchAsync";
 import { UserServices } from "./user.services";
 import httpStatus from "http-status";
 
-// create new student in students collection
+// create student
 const createStudent = catchAsync(async (req, res) => {
     const { password, student } = req.body;
     const dbRes = await UserServices.createStudentIntoDB(password, student);
@@ -14,6 +14,19 @@ const createStudent = catchAsync(async (req, res) => {
     });
 });
 
+// create faculty
+const createFaculty = catchAsync(async (req, res) => {
+    const { password, faculty } = req.body;
+    const dbRes = await UserServices.createFacultyIntoDB(password, faculty);
+    
+    res.status(httpStatus.OK).json({
+        success: true,
+        message: "Faculty is created successfully.",
+        data: dbRes
+    });
+});
+
 export const UserControllers = {
-    createStudent
+    createStudent,
+    createFaculty
 };
