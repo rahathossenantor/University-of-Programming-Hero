@@ -13,6 +13,33 @@ const getAllFaculties = catchAsync(async (req, res) => {
     });
 });
 
+// get single faculty
+const getSingleFaculty = catchAsync(async (req, res) => {
+    const { facultyId } = req.params;
+    const dbRes = await FacultyServices.getSingleFacultyFromDB(facultyId);
+
+    res.status(httpStatus.OK).json({
+        success: true,
+        message: (dbRes ? "Faculty is retrived successfully." : "No faculty found!"),
+        data: dbRes
+    });
+});
+
+// update faculty
+const updateFaculty = catchAsync(async (req, res) => {
+    const { facultyId } = req.params;
+    const { faculty } = req.body;
+    const dbRes = await FacultyServices.updateFacultyIntoDB(facultyId, faculty);
+
+    res.status(httpStatus.OK).json({
+        success: true,
+        message: "Faculty is updated succesfully.",
+        data: dbRes
+    });
+});
+
 export const FacultyControllers = {
-    getAllFaculties
+    getAllFaculties,
+    getSingleFaculty,
+    updateFaculty
 };
