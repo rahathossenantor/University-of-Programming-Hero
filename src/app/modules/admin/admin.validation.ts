@@ -25,6 +25,30 @@ export const AdminCreationValidationSchema = z.object({
     })
 });
 
+const NameUpdatationSchema = z.object({
+    firstName: z.string().optional(),
+    middleName: z.string().optional(),
+    lastName: z.string().optional()
+});
+
+export const AdminUpdatationValidationSchema = z.object({
+    body: z.object({
+        admin: z.object({
+            name: NameUpdatationSchema.optional(),
+            gender: z.enum(["male", "female", "other"]).optional(),
+            designation: z.string().optional(),
+            dateOfBirth: z.string().optional(),
+            email: z.string().email().optional(),
+
+            contactNo: z.string().optional(),
+            emergencyContactNo: z.string().optional(),
+            bloodGroup: z.enum(["A", "B", "AB", "O", "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]).optional(),
+            presentAddress: z.string().optional(),
+            permanentAddress: z.string().optional(),
+            avatar: z.string().optional()
+        })
+    })
+});
 
 export const AdminValidations = {
     AdminCreationValidationSchema,
