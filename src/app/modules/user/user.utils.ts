@@ -53,3 +53,13 @@ export const generateFacultyId = async () => {
   incrementId = `F-${incrementId}`;
   return incrementId;
 };
+
+// get last admin id
+export const getLastAdminId = async () => {
+  const lastAdmin = await User
+    .findOne({ role: "admin" }, { id: 1, _id: 0 })
+    .sort({ createdAt: -1 })
+    .lean();
+
+  return lastAdmin?.id;
+};
