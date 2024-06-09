@@ -10,7 +10,7 @@ const getLastStudentId = async () => {
     return lastStudent?.id;
 };
 
-// generate new student id
+// generate student id
 export const generateStudentId = async (payload: TAcademicSemester) => {
     let currentId = "0000";
     const lastStudentId = await getLastStudentId();
@@ -40,7 +40,7 @@ export const getLastFacultyId = async () => {
   return lastFaculty?.id;
 };
 
-// generate new faculty id
+// generate faculty id
 export const generateFacultyId = async () => {
   let currentId = "0000";
   const lastFacultyId = await getLastFacultyId();
@@ -62,4 +62,18 @@ export const getLastAdminId = async () => {
     .lean();
 
   return lastAdmin?.id;
+};
+
+// generate admin id
+export const generateAdminId = async () => {
+  let currentId = "0000";
+  const lastAdminId = await getLastAdminId();
+
+  if (lastAdminId) {
+    currentId = lastAdminId.substring(2);
+  }
+
+  let incrementId = (Number(currentId) + 1).toString().padStart(4, "0");
+  incrementId = `A-${incrementId}`;
+  return incrementId;
 };
