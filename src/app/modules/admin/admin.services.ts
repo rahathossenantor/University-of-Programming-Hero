@@ -47,8 +47,43 @@ const updateAdminIntoDB = async (id: string, payload: Partial<TAdmin>) => {
   return dbRes;
 };
 
+// delete admin
+const deleteAdminFromDB = async (id: string) => {
+  const session = await mongoose.startSession();
+  try {
+    session.startTransaction();
+    const deletedAdmin = await Admin.findByIdAndUpdate(
+      id,
+      { isDeleted: true },
+      { new: true, session }
+    );
+    if (!deletedAdmin) {
+      throw new AppError(httpStatus.BAD_REQUEST, "Failed to delete admin!");
+    }
+
+    const userId = deletedAdmin.user;
+    const deletedUser = await User.findByIdAndUpdate(
+      userId,
+      { isDeleted: true },
+      { new: true, session },
+    );
+    if (!deletedUser) {
+      throw new AppError(httpStatus.BAD_REQUEST, "Failed to delete user!");
+    }
+
+    await session.commitTransaction();
+    await session.endSession();
+    return deletedAdmin;
+  } catch (err) {
+    await session.abortTransaction();
+    await session.endSession();
+    throw new Error("Failed to delete admin!");
+  }
+};
+
 export const AdminServices = {
     getAllAdminsFromDB,
     getSingleAdminFromDB,
-    updateAdminIntoDB
+    updateAdminIntoDB,
+    deleteAdminFromDB
 };
