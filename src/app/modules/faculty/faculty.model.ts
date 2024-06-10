@@ -120,7 +120,7 @@ facultySchema.pre("find", function (next) {
   next();
 });
 
-facultySchema.pre('findOne', function (next) {
+facultySchema.pre("findOne", function (next) {
   this.find({ isDeleted: { $ne: true } });
   next();
 });

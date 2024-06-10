@@ -185,6 +185,11 @@ studentSchema.pre("find", function (next) {
     next();
 });
 
+studentSchema.pre("findOne", function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
 // checking is the document is exist or not
 studentSchema.pre("findOneAndUpdate", async function (next) {
     const query = this.getQuery();
