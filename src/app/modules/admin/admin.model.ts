@@ -116,7 +116,7 @@ adminSchema.pre("find", function (next) {
   next();
 });
 
-adminSchema.pre('findOne', function (next) {
+adminSchema.pre("findOne", function (next) {
   this.find({ isDeleted: { $ne: true } });
   next();
 });
