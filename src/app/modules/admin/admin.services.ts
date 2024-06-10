@@ -15,6 +15,17 @@ const getAllAdminsFromDB = async (query: Record<string, string>) => {
   return dbRes;
 };
 
+// get single admin
+const getSingleAdminFromDB = async (id: string) => {
+  const dbRes = await Admin.findById(id);
+
+  if (!dbRes) {
+    throw new AppError(httpStatus.NOT_FOUND, "Admin does not exist!");
+  }
+  return dbRes;
+};
+
 export const AdminServices = {
-    getAllAdminsFromDB
+    getAllAdminsFromDB,
+    getSingleAdminFromDB
 };
