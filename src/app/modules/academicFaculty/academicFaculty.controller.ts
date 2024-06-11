@@ -15,9 +15,9 @@ const createAcademicFaculty = catchAsync(async (req, res) => {
 
 // update academic faculty by id
 const updateAcademicFaculty = catchAsync(async (req, res) => {
-    const { academicFacultyId } = req.params;
+    const { id } = req.params;
     const dbRes = await AcademicFacultyServices.updateAcademicFacultyIntoDB(
-        academicFacultyId,
+        id,
         req.body
     );
 
@@ -41,8 +41,8 @@ const getAllAcademicFaculties = catchAsync(async (req, res) => {
 
 // get single academic faculty
 const getSingleAcademicFaculty = catchAsync(async (req, res) => {
-    const { academicFacultyId } = req.params;
-    const dbRes = await AcademicFacultyServices.getSingleAcademicFacultyFromDB(academicFacultyId);
+    const { id } = req.params;
+    const dbRes = await AcademicFacultyServices.getSingleAcademicFacultyFromDB(id);
 
     res.status(httpStatus.OK).json({
         success: true,

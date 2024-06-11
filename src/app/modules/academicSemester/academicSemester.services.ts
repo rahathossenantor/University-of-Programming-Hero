@@ -23,7 +23,7 @@ const updateAcademicSemesterIntoDB = async (
     ) {
         throw new Error("Invalid semester code!");
     }
-    const dbRes = await AcademicSemester.findOneAndUpdate({ _id: id }, payload, {
+    const dbRes = await AcademicSemester.findByIdAndUpdate(id, payload, {
         new: true,
     });
     return dbRes;
