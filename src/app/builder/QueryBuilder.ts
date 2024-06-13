@@ -15,7 +15,7 @@ class QueryBuilder<T> {
       this.modelQuery = this.modelQuery.find(
         {
           $or: searchableFields.map((field) => (
-            {[field]: { $regex: searchTerm, $options: "i" }} as FilterQuery<T>
+            { [field]: { $regex: searchTerm, $options: "i" } } as FilterQuery<T>
           ))
         }
       );

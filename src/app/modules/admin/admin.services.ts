@@ -1,9 +1,13 @@
 import QueryBuilder from "../../builder/QueryBuilder";
 import { Admin } from "./admin.model";
 import { TAdmin } from "./admin.interface";
+import AppError from "../../errors/AppError";
+import httpStatus from "http-status";
+import mongoose from "mongoose";
+import { User } from "../user/user.model";
 
 // get all admins
-const getAllAdminsFromDB = async (query: Record<string, string>) => {
+const getAllAdminsFromDB = async (query: Record<string, unknown>) => {
   const adminSearchableFields: string[] = ["id", "name.firstName", "name.middleName", "name.lastName", "email", "contactNo", "emergencyContactNo"];
   const adminQuery = new QueryBuilder(Admin.find(), query)
         .search(adminSearchableFields)

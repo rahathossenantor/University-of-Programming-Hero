@@ -3,17 +3,19 @@ import { Faculty } from "./faculty.model";
 import { TFaculty } from "./faculty.interface";
 import AppError from "../../errors/AppError";
 import httpStatus from "http-status";
+import mongoose from "mongoose";
+import { User } from "../user/user.model";
 
 // get all faculties
-const getAllFacultiesFromDB = async (query: Record<string, string>) => {
+const getAllFacultiesFromDB = async (query: Record<string, unknown>) => {
   const facultySearchableFields: string[] = ["name.firstName", "email"];
   const facultyQuery = new QueryBuilder(Faculty.find().populate("academicDepartment"), query)
-        .search(facultySearchableFields)
-        .filter()
-        .sort()
-        .paginate()
-        .limitFields();
-    
+    .search(facultySearchableFields)
+    .filter()
+    .sort()
+    .paginate()
+    .limitFields();
+
   const dbRes = await facultyQuery.modelQuery;
   return dbRes;
 };
@@ -84,8 +86,8 @@ const deleteFacultyFromDB = async (id: string) => {
 };
 
 export const FacultyServices = {
-    getAllFacultiesFromDB,
-    getSingleFacultyFromDB,
-    updateFacultyIntoDB,
-    deleteFacultyFromDB
+  getAllFacultiesFromDB,
+  getSingleFacultyFromDB,
+  updateFacultyIntoDB,
+  deleteFacultyFromDB
 };

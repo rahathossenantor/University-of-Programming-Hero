@@ -2,26 +2,26 @@
 import { Model, Types } from "mongoose";
 
 export type TName = {
-    firstName: string;
-    middleName?: string;
-    lastName: string;
+  firstName: string;
+  middleName?: string;
+  lastName: string;
 };
 
 export type TGender = "male" | "female" | "other";
 
 type TBloodGroup =
-    | "A"
-    | "B"
-    | "AB"
-    | "O"
-    | "A+"
-    | "A-"
-    | "B+"
-    | "B-"
-    | "AB+"
-    | "AB-"
-    | "O+"
-    | "O-";
+  | "A"
+  | "B"
+  | "AB"
+  | "O"
+  | "A+"
+  | "A-"
+  | "B+"
+  | "B-"
+  | "AB+"
+  | "AB-"
+  | "O+"
+  | "O-";
 
 export type TFaculty = {
   id: string;

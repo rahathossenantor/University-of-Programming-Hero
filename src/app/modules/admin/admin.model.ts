@@ -2,35 +2,35 @@ import { Schema, model } from "mongoose";
 import { AdminModel, TAdmin, TName } from "./admin.interface";
 
 const nameSchema = new Schema<TName>({
-    firstName: {
-        type: String,
-        required: true,
-        validate: {
-            validator: (fName: string) => {
-                const splittedName = fName.trim().split(" ");
-                const capitalizedName = splittedName.map(word => (word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()));
-                const userName = capitalizedName.join(" ");
-                return userName === fName;
-            },
-            message: props => `${props.value} is not a valid format!`
-        }
-    },
-    middleName: {
-        type: String
-    },
-    lastName: {
-        type: String,
-        required: true,
-        validate: {
-            validator: (lName: string) => {
-                const splittedName = lName.trim().split(" ");
-                const capitalizedName = splittedName.map(word => (word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()));
-                const userName = capitalizedName.join(" ");
-                return userName === lName;
-            },
-            message: props => `${props.value} is not a valid format!`
-        }
+  firstName: {
+    type: String,
+    required: true,
+    validate: {
+      validator: (fName: string) => {
+        const splittedName = fName.trim().split(" ");
+        const capitalizedName = splittedName.map(word => (word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()));
+        const userName = capitalizedName.join(" ");
+        return userName === fName;
+      },
+      message: props => `${props.value} is not a valid format!`
     }
+  },
+  middleName: {
+    type: String
+  },
+  lastName: {
+    type: String,
+    required: true,
+    validate: {
+      validator: (lName: string) => {
+        const splittedName = lName.trim().split(" ");
+        const capitalizedName = splittedName.map(word => (word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()));
+        const userName = capitalizedName.join(" ");
+        return userName === lName;
+      },
+      message: props => `${props.value} is not a valid format!`
+    }
+  }
 });
 
 const adminSchema = new Schema<TAdmin, AdminModel>(
@@ -50,63 +50,63 @@ const adminSchema = new Schema<TAdmin, AdminModel>(
       required: true,
     },
     name: {
-        type: nameSchema,
-        required: true
+      type: nameSchema,
+      required: true
     },
     gender: {
-        type: String,
-        enum: ["male", "female", "other"],
-        required: true
+      type: String,
+      enum: ["male", "female", "other"],
+      required: true
     },
     dateOfBirth: {
-        type: Date,
-        required: true
+      type: Date,
+      required: true
     },
     email: {
-        type: String,
-        required: true,
-        unique: true
+      type: String,
+      required: true,
+      unique: true
     },
     contactNo: {
-        type: String,
-        required: true
+      type: String,
+      required: true
     },
     emergencyContactNo: {
-        type: String,
-        required: true
+      type: String,
+      required: true
     },
     bloodGroup: {
-        type: String,
-        enum: [
-            "A",
-            "B",
-            "AB",
-            "O",
-            "A+",
-            "A-",
-            "B+",
-            "B-",
-            "AB+",
-            "AB-",
-            "O+",
-            "O-",
-        ]
+      type: String,
+      enum: [
+        "A",
+        "B",
+        "AB",
+        "O",
+        "A+",
+        "A-",
+        "B+",
+        "B-",
+        "AB+",
+        "AB-",
+        "O+",
+        "O-",
+      ]
     },
     presentAddress: {
-        type: String
+      type: String
     },
     permanentAddress: {
-        type: String,
-        required: true
+      type: String,
+      required: true
     },
     avatar: {
-        type: String
+      type: String
     },
     isDeleted: { type: Boolean, default: false }
   },
   {
     toJSON: {
-        virtuals: true
+      virtuals: true
     }
   }
 );

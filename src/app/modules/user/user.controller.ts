@@ -6,7 +6,7 @@ import httpStatus from "http-status";
 const createStudent = catchAsync(async (req, res) => {
     const { password, student } = req.body;
     const dbRes = await UserServices.createStudentIntoDB(password, student);
-    
+
     res.status(httpStatus.OK).json({
         success: true,
         message: "Student is created successfully.",
@@ -18,7 +18,7 @@ const createStudent = catchAsync(async (req, res) => {
 const createFaculty = catchAsync(async (req, res) => {
     const { password, faculty } = req.body;
     const dbRes = await UserServices.createFacultyIntoDB(password, faculty);
-    
+
     res.status(httpStatus.OK).json({
         success: true,
         message: "Faculty is created successfully.",
@@ -30,7 +30,7 @@ const createFaculty = catchAsync(async (req, res) => {
 const createAdmin = catchAsync(async (req, res) => {
     const { password, admin } = req.body;
     const dbRes = await UserServices.createAdminIntoDB(password, admin);
-    
+
     res.status(httpStatus.OK).json({
         success: true,
         message: "Admin is created successfully.",
