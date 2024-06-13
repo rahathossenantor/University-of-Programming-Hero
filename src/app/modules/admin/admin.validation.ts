@@ -39,7 +39,6 @@ export const AdminUpdatationValidationSchema = z.object({
             designation: z.string().optional(),
             dateOfBirth: z.string().optional(),
             email: z.string().email().optional(),
-
             contactNo: z.string().optional(),
             emergencyContactNo: z.string().optional(),
             bloodGroup: z.enum(["A", "B", "AB", "O", "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]).optional(),
