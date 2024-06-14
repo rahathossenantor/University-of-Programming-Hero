@@ -1,3 +1,5 @@
+import httpStatus from "http-status";
+import AppError from "../../errors/AppError";
 import { Course } from "./course.model";
 
 // create a new course
@@ -15,11 +17,22 @@ const getAllCoursesFromDB = async () => {
 // get single course
 const getSingleCourseFromDB = async (id: string) => {
     const dbRes = await Course.findById(id);
+
+    if (!dbRes) {
+        throw new AppError(httpStatus.NOT_FOUND, "Course does not exist!");
+    }
+    return dbRes;
+};
+
+// delete course
+const deleteCourseFromDB = async (id: string) => {
+    const dbRes = await Course.findByIdAndUpdate(id, { isDeleted: true }, { new: true });
     return dbRes;
 };
 
 export const AdminServices = {
     createCourseIntoDB,
     getAllCoursesFromDB,
-    getSingleCourseFromDB
+    getSingleCourseFromDB,
+    deleteCourseFromDB
 };
