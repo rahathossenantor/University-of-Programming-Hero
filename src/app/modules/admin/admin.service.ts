@@ -10,12 +10,12 @@ import { User } from "../user/user.model";
 const getAllAdminsFromDB = async (query: Record<string, unknown>) => {
   const adminSearchableFields: string[] = ["id", "name.firstName", "name.middleName", "name.lastName", "email", "contactNo", "emergencyContactNo"];
   const adminQuery = new QueryBuilder(Admin.find(), query)
-        .search(adminSearchableFields)
-        .filter()
-        .sort()
-        .paginate()
-        .limitFields();
-    
+    .search(adminSearchableFields)
+    .filter()
+    .sort()
+    .paginate()
+    .limitFields();
+
   const dbRes = await adminQuery.modelQuery;
   return dbRes;
 };
@@ -86,8 +86,8 @@ const deleteAdminFromDB = async (id: string) => {
 };
 
 export const AdminServices = {
-    getAllAdminsFromDB,
-    getSingleAdminFromDB,
-    updateAdminIntoDB,
-    deleteAdminFromDB
+  getAllAdminsFromDB,
+  getSingleAdminFromDB,
+  updateAdminIntoDB,
+  deleteAdminFromDB
 };
