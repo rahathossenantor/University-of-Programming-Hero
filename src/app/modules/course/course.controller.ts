@@ -13,6 +13,19 @@ const getAllCourses = catchAsync(async (req, res) => {
     });
 });
 
+// get single course
+const getSingleCourse = catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const dbRes = await CourseServices.getSingleCourseFromDB(id);
+
+    res.status(httpStatus.OK).json({
+        success: true,
+        message: (dbRes ? "Course is retrived successfully." : "No course found!"),
+        data: dbRes
+    });
+});
+
 export const CourseControllers = {
-    getAllCourses
+    getAllCourses,
+    getSingleCourse
 };
