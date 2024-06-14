@@ -30,7 +30,7 @@ const deleteCourseFromDB = async (id: string) => {
     return dbRes;
 };
 
-export const AdminServices = {
+export const CourseServices = {
     createCourseIntoDB,
     getAllCoursesFromDB,
     getSingleCourseFromDB,
