@@ -1,4 +1,4 @@
-import { AdminServices } from "./admin.services";
+import { AdminServices } from "./admin.service";
 import httpStatus from "http-status";
 import catchAsync from "../../utils/catchAsync";
 

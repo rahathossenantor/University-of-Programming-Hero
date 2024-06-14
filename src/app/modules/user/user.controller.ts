@@ -1,5 +1,5 @@
 import catchAsync from "../../utils/catchAsync";
-import { UserServices } from "./user.services";
+import { UserServices } from "./user.service";
 import httpStatus from "http-status";
 
 // create student

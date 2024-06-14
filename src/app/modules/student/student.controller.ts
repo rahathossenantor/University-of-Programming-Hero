@@ -1,4 +1,4 @@
-import { StudentServices } from "./student.services";
+import { StudentServices } from "./student.service";
 import httpStatus from "http-status";
 import catchAsync from "../../utils/catchAsync";
 

@@ -1,6 +1,6 @@
 import httpStatus from "http-status";
 import catchAsync from "../../utils/catchAsync";
-import { AcademicSemesterServices } from "./academicSemester.services";
+import { AcademicSemesterServices } from "./academicSemester.service";
 
 // create an academic semester
 const createAcademicSemester = catchAsync(async (req, res) => {
