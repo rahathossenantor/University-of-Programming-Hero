@@ -6,6 +6,13 @@ const createCourseIntoDB = async () => {
     return dbRes;
 };
 
+// get all course
+const getAllCoursesFromDB = async () => {
+    const dbRes = await Course.find();
+    return dbRes;
+};
+
 export const AdminServices = {
-    createCourseIntoDB
+    createCourseIntoDB,
+    getAllCoursesFromDB
 };
