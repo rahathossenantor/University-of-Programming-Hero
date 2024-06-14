@@ -2,6 +2,17 @@ import httpStatus from "http-status";
 import catchAsync from "../../utils/catchAsync";
 import { CourseServices } from "./course.service";
 
+// create course
+const createCourse = catchAsync(async (req, res) => {
+    const dbRes = await CourseServices.createCourseIntoDB(req.body);
+
+    res.status(httpStatus.OK).json({
+        success: true,
+        message: "Course is created.",
+        data: dbRes
+    });
+});
+
 // get all courses
 const getAllCourses = catchAsync(async (req, res) => {
     const dbRes = await CourseServices.getAllCoursesFromDB();
@@ -38,6 +49,7 @@ const deleteCourse = catchAsync(async (req, res) => {
 });
 
 export const CourseControllers = {
+    createCourse,
     getAllCourses,
     getSingleCourse,
     deleteCourse

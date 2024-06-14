@@ -1,10 +1,11 @@
 import httpStatus from "http-status";
 import AppError from "../../errors/AppError";
 import { Course } from "./course.model";
+import { TCourse } from "./course.interface";
 
 // create a new course
-const createCourseIntoDB = async () => {
-    const dbRes = await Course.create();
+const createCourseIntoDB = async (payload: TCourse) => {
+    const dbRes = await Course.create(payload);
     return dbRes;
 };
 
