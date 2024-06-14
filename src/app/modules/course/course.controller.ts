@@ -25,7 +25,20 @@ const getSingleCourse = catchAsync(async (req, res) => {
     });
 });
 
+// delete single course
+const deleteCourse = catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const dbRes = await CourseServices.deleteCourseFromDB(id);
+
+    res.status(httpStatus.OK).json({
+        success: true,
+        message: "Course is deleted successfully.",
+        data: dbRes
+    });
+});
+
 export const CourseControllers = {
     getAllCourses,
-    getSingleCourse
+    getSingleCourse,
+    deleteCourse
 };
