@@ -6,13 +6,20 @@ const createCourseIntoDB = async () => {
     return dbRes;
 };
 
-// get all course
+// get all courses
 const getAllCoursesFromDB = async () => {
     const dbRes = await Course.find();
     return dbRes;
 };
 
+// get single course
+const getSingleCourseFromDB = async (id: string) => {
+    const dbRes = await Course.findById(id);
+    return dbRes;
+};
+
 export const AdminServices = {
     createCourseIntoDB,
-    getAllCoursesFromDB
+    getAllCoursesFromDB,
+    getSingleCourseFromDB
 };
