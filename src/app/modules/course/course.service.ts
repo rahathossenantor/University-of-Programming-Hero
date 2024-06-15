@@ -37,6 +37,37 @@ const getSingleCourseFromDB = async (id: string) => {
 // update course
 const updateCourseIntoDB = async (id: string, payload: Partial<TCourse>) => {
     const { preRequisiteCourses, ...remainingCourseData } = payload;
+    if (preRequisiteCourses && preRequisiteCourses.length) {
+        // remove pre requisite courses
+        const preRequisiteCoursesIds = preRequisiteCourses
+            .filter(preRequisite => preRequisite.course && preRequisite.isDeleted)
+            .map(preRequisite => preRequisite.course);
+        if (preRequisiteCoursesIds.length) {
+            await Course.findByIdAndUpdate(
+                id,
+                {
+                    $pull: {
+                        preRequisiteCourses: { course: { $in: preRequisiteCoursesIds } }
+                    }
+                }
+            );
+        }
+
+        // add pre requisite courses
+        const newPreRequisiteCourses = preRequisiteCourses
+            .filter(preRequisite => preRequisite.course && !preRequisite.isDeleted);
+        if (newPreRequisiteCourses.length) {
+            await Course.findByIdAndUpdate(
+                id,
+                {
+                    $addToSet: {
+                        preRequisiteCourses: { $each: newPreRequisiteCourses }
+                    }
+                }
+            );
+        }
+    }
+
     const updatedBasicCourse = await Course.findByIdAndUpdate(
         id,
         remainingCourseData,
@@ -44,7 +75,7 @@ const updateCourseIntoDB = async (id: string, payload: Partial<TCourse>) => {
             new: true,
             runValidators: true
         }
-    );
+    ).populate("preRequisiteCourses.course");
     return updatedBasicCourse;
 };
 
