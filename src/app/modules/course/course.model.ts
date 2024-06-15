@@ -47,7 +47,7 @@ const courseSchema = new Schema<TCourse>(
         isDeleted: {
             type: Boolean,
             default: false
-        },
+        }
     },
     {
         timestamps: true

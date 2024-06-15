@@ -26,12 +26,26 @@ const getAllCoursesFromDB = async (query: Record<string, unknown>) => {
 
 // get single course
 const getSingleCourseFromDB = async (id: string) => {
-    const dbRes = await Course.findById(id);
+    const dbRes = await Course.findById(id).populate("preRequisiteCourses.course");
 
     if (!dbRes) {
         throw new AppError(httpStatus.NOT_FOUND, "Course does not exist!");
     }
     return dbRes;
+};
+
+// update course
+const updateCourseIntoDB = async (id: string, payload: Partial<TCourse>) => {
+    const { preRequisiteCourses, ...remainingCourseData } = payload;
+    const updatedBasicCourse = await Course.findByIdAndUpdate(
+        id,
+        remainingCourseData,
+        {
+            new: true,
+            runValidators: true
+        }
+    );
+    return updatedBasicCourse;
 };
 
 // delete course
@@ -44,5 +58,6 @@ export const CourseServices = {
     createCourseIntoDB,
     getAllCoursesFromDB,
     getSingleCourseFromDB,
+    updateCourseIntoDB,
     deleteCourseFromDB
 };
