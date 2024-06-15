@@ -22,7 +22,7 @@ const preRequisiteCoursesSchema = new Schema<TPreRequisiteCourses>(
 
 const courseSchema = new Schema<TCourse>(
     {
-        title: {
+        name: {
             type: String,
             unique: true,
             trim: true,

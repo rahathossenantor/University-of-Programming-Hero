@@ -6,7 +6,7 @@ export type TPreRequisiteCourses = {
 };
 
 export type TCourse = {
-    title: string;
+    name: string;
     prefix: string;
     code: number;
     credits: number;
