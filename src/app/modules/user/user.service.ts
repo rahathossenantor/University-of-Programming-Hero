@@ -31,7 +31,6 @@ const createStudentIntoDB = async (password: string, payload: TStudent) => {
   userData.id = await generateStudentId(academicSemester as TAcademicSemester);
 
   const session = await mongoose.startSession();
-
   try {
     session.startTransaction();
     // create user
@@ -75,7 +74,6 @@ const createFacultyIntoDB = async (password: string, payload: TFaculty) => {
   userData.id = await generateFacultyId();
 
   const session = await mongoose.startSession();
-
   try {
     session.startTransaction();
     // create user
@@ -112,7 +110,6 @@ const createAdminIntoDB = async (password: string, payload: TAdmin) => {
   userData.id = await generateAdminId();
 
   const session = await mongoose.startSession();
-
   try {
     session.startTransaction();
     // create user
