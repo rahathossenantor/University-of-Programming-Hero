@@ -51,8 +51,19 @@ const getSingleSemesterRegistrationFromDB = async (id: string) => {
     return dbRes;
 };
 
+// update student
+const updateSemesterRegistrationIntoDB = async (id: string, payload: Partial<TSemesterRegistration>) => {
+    const dbRes = await SemesterRegistration.findByIdAndUpdate(
+        id,
+        payload,
+        { new: true, runValidators: true }
+    );
+    return dbRes;
+};
+
 export const SemesterRegistrationServices = {
     createSemesterRegistrationIntoDB,
     getAllSemesterRegistrationsFromDB,
-    getSingleSemesterRegistrationFromDB
+    getSingleSemesterRegistrationFromDB,
+    updateSemesterRegistrationIntoDB
 };
