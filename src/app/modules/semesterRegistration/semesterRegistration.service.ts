@@ -41,7 +41,18 @@ const getAllSemesterRegistrationsFromDB = async (query: Record<string, unknown>)
     return dbRes;
 };
 
+// get single semster ragistration
+const getSingleSemesterRegistrationFromDB = async (id: string) => {
+    const dbRes = await SemesterRegistration.findById(id).populate("academicSemester");
+
+    if (!dbRes) {
+        throw new AppError(httpStatus.NOT_FOUND, "Semster ragistration does not exist!");
+    }
+    return dbRes;
+};
+
 export const SemesterRegistrationServices = {
     createSemesterRegistrationIntoDB,
-    getAllSemesterRegistrationsFromDB
+    getAllSemesterRegistrationsFromDB,
+    getSingleSemesterRegistrationFromDB
 };
