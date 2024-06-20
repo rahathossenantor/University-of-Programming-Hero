@@ -7,7 +7,8 @@ import { TGuardian, TName, TParents, TStudent } from "./student.interface";
 import QueryBuilder from "../../builder/QueryBuilder";
 import { studentSearchableFields } from "./student.constant";
 
-const getAllStudentsFromDB = async (query: Record<string, string>) => {
+// get all students
+const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
     const studentQuery = new QueryBuilder(
         Student.find()
           .populate("academicSemester")
@@ -27,6 +28,7 @@ const getAllStudentsFromDB = async (query: Record<string, string>) => {
     return dbRes;
 };
 
+// get single student
 const getSingleStudentFromDB = async (id: string) => {
     const dbRes = await Student.findById(id)
         .populate("academicSemester")
