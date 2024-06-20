@@ -7,6 +7,17 @@ import QueryBuilder from "../../builder/QueryBuilder";
 
 // create semester registration
 const createSemesterRegistrationIntoDB = async (payload: TSemesterRegistration) => {
+    // check is there any upcoming or ongoing semester
+    const upcomingOrOngoingSemesterRegistration = await AcademicSemester.findOne({
+        $or: [
+            { status: "UPCOMING" },
+            { status: "ONGOING" }
+        ]
+    });
+    if (upcomingOrOngoingSemesterRegistration) {
+        throw new AppError(httpStatus.BAD_REQUEST, `${upcomingOrOngoingSemesterRegistration} found!`);
+    }
+
     // check is academic semester is exist or not
     const academicSemester = payload?.academicSemester;
     const isAcademicSemesterExist = await AcademicSemester.findById(academicSemester);
@@ -51,8 +62,20 @@ const getSingleSemesterRegistrationFromDB = async (id: string) => {
     return dbRes;
 };
 
-// update student
+// update semster ragistration
 const updateSemesterRegistrationIntoDB = async (id: string, payload: Partial<TSemesterRegistration>) => {
+    const currentSemesterRegistration: TSemesterRegistration | null = await SemesterRegistration.findById(id);
+    const currentStatus = currentSemesterRegistration?.status;
+    const requestedStatus = payload?.status;
+
+    if (currentStatus === "ENDED") {
+        throw new AppError(httpStatus.BAD_REQUEST, "Semster ragistration is already ended!");
+    } else if (currentStatus === "UPCOMING" && requestedStatus === "ENDED") {
+        throw new AppError(httpStatus.BAD_REQUEST, `You canntot change status diractly from ${currentStatus} to ${requestedStatus}`);
+    } else if (currentStatus === "ONGOING" && requestedStatus === "UPCOMING") {
+        throw new AppError(httpStatus.BAD_REQUEST, `You canntot change status diractly from ${currentStatus} to ${requestedStatus}`);
+    }
+
     const dbRes = await SemesterRegistration.findByIdAndUpdate(
         id,
         payload,
