@@ -24,7 +24,20 @@ const getAllSemesterRegistrations = catchAsync(async (req, res) => {
     });
 });
 
+// get single student from students collection
+const getSingleSemesterRegistration = catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const dbRes = await SemesterRegistrationServices.getSingleSemesterRegistrationFromDB(id);
+
+    res.status(httpStatus.OK).json({
+        success: true,
+        message: (dbRes ? "Semester registration is retrived successfully." : "No semester registration found!"),
+        data: dbRes
+    });
+});
+
 export const SemesterRegistrationControllers = {
     createSemesterRegistration,
-    getAllSemesterRegistrations
+    getAllSemesterRegistrations,
+    getSingleSemesterRegistration
 };
