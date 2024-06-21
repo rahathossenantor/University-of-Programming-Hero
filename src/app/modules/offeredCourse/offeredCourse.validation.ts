@@ -14,45 +14,45 @@ const timeStringSchema = z.string().refine(
 
 const OfferedCourseCreationValidationSchema = z.object({
     body: z.object({
-            semesterRegistration: z.string(),
-            academicFaculty: z.string(),
-            academicDepartment: z.string(),
-            course: z.string(),
-            faculty: z.string(),
-            section: z.number(),
-            maxCapacity: z.number(),
-            days: z.array(z.enum([...days] as [string, ...string[]])),
-            startTime: timeStringSchema,
-            endTime: timeStringSchema
-        }).refine(
-            (body) => {
-                const start = new Date(`1970-01-01T${body.startTime}:00`);
-                const end = new Date(`1970-01-01T${body.endTime}:00`);
-                return end > start;
-            },
-            {
-                message: "Start time should be before end time!",
-            }
-        )
+        semesterRegistration: z.string(),
+        academicFaculty: z.string(),
+        academicDepartment: z.string(),
+        course: z.string(),
+        faculty: z.string(),
+        section: z.number(),
+        maxCapacity: z.number(),
+        days: z.array(z.enum([...days] as [string, ...string[]])),
+        startTime: timeStringSchema,
+        endTime: timeStringSchema
+    }).refine(
+        (body) => {
+            const start = new Date(`1970-01-01T${body.startTime}:00`);
+            const end = new Date(`1970-01-01T${body.endTime}:00`);
+            return end > start;
+        },
+        {
+            message: "Start time should be before end time!",
+        }
+    )
 });
 
 const OfferedCourseUpdatationValidationSchema = z.object({
     body: z.object({
-            faculty: z.string(),
-            maxCapacity: z.number(),
-            days: z.array(z.enum([...days] as [string, ...string[]])),
-            startTime: timeStringSchema,
-            endTime: timeStringSchema,
-        }).refine(
-            (body) => {
-                const start = new Date(`1970-01-01T${body.startTime}:00`);
-                const end = new Date(`1970-01-01T${body.endTime}:00`);
-                return end > start;
-            },
-            {
-                message: "Start time should be before end time!",
-            }
-        )
+        faculty: z.string().optional(),
+        maxCapacity: z.number().optional(),
+        days: z.array(z.enum([...days] as [string, ...string[]])).optional(),
+        startTime: timeStringSchema.optional(),
+        endTime: timeStringSchema.optional(),
+    }).refine(
+        (body) => {
+            const start = new Date(`1970-01-01T${body.startTime}:00`);
+            const end = new Date(`1970-01-01T${body.endTime}:00`);
+            return end > start;
+        },
+        {
+            message: "Start time should be before end time!",
+        }
+    )
 });
 
 export const OfferedCourseValidations = {
