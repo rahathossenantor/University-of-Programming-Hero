@@ -86,6 +86,68 @@ const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
     return dbRes;
 };
 
+// update offered course
+const updateOfferedCourseIntoDB = async (
+    id: string,
+    payload: Pick<TOfferedCourse, "faculty" | "maxCapacity" | "days" | "startTime" | "endTime">
+) => {
+    const { faculty, days, startTime, endTime } = payload;
+
+    // is offered course exist
+    const isOfferedCourseExist = await OfferedCourse.findById(id);
+    if (!isOfferedCourseExist) {
+        throw new AppError(httpStatus.NOT_FOUND, "Offered course does not exist!");
+    }
+    const semesterRegistration = isOfferedCourseExist.semesterRegistration;
+
+    // check the status of the offered course
+    const semesterReg = await SemesterRegistration.findById(semesterRegistration).select("status");
+    if (semesterReg?.status !== "UPCOMING") {
+        throw new AppError(httpStatus.NOT_FOUND, `Cannot be updated as it is ${semesterReg?.status}`);
+    }
+
+    // is faculty exist
+    const isFacultyExists = await Faculty.findById(faculty);
+    if (!isFacultyExists) {
+        throw new AppError(httpStatus.NOT_FOUND, "Faculty does not exist!");
+    }
+
+    // get the schedules of the faculties
+    const assignedSchedules = await OfferedCourse.find({
+        semesterRegistration,
+        faculty,
+        days: { $in: days }
+    }, {
+        days: 1,
+        startTime: 1,
+        endTime: 1
+    });
+    const newSchedule = {
+        days,
+        startTime,
+        endTime
+    };
+
+    if (hasTimeConfliction(assignedSchedules, newSchedule)) {
+        throw new AppError(
+            httpStatus.CONFLICT,
+            `This faculty is not available at that time! Choose other time or day.`
+        );
+    }
+
+    // update offered course
+    const dbRes = await OfferedCourse.findByIdAndUpdate(
+        id,
+        payload,
+        {
+            new: true,
+            runValidators: true
+        }
+    );
+    return dbRes;
+};
+
 export const OfferedCourseServices = {
-    createOfferedCourseIntoDB
+    createOfferedCourseIntoDB,
+    updateOfferedCourseIntoDB
 };
