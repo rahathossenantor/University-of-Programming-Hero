@@ -8,58 +8,58 @@ const offeredCourseSchema = new mongoose.Schema<TOfferedCourse>(
         semesterRegistration: {
             type: Schema.Types.ObjectId,
             required: true,
-            ref: "SemesterRegistration",
+            ref: "SemesterRegistration"
         },
         academicSemester: {
             type: Schema.Types.ObjectId,
             required: true,
-            ref: "AcademicSemester",
+            ref: "AcademicSemester"
         },
         academicFaculty: {
             type: Schema.Types.ObjectId,
             required: true,
-            ref: "AcademicFaculty",
+            ref: "AcademicFaculty"
         },
         academicDepartment: {
             type: Schema.Types.ObjectId,
             required: true,
-            ref: "AcademicDepartment",
+            ref: "AcademicDepartment"
         },
         course: {
             type: Schema.Types.ObjectId,
             required: true,
-            ref: "Course",
+            ref: "Course"
         },
         faculty: {
             type: Schema.Types.ObjectId,
             required: true,
-            ref: "Faculty",
+            ref: "Faculty"
         },
         maxCapacity: {
             type: Number,
-            required: true,
+            required: true
         },
         section: {
             type: Number,
-            required: true,
+            required: true
         },
         days: [
             {
                 type: String,
-                enum: days,
-            },
+                enum: days
+            }
         ],
         startTime: {
             type: String,
-            required: true,
+            required: true
         },
         endTime: {
             type: String,
-            required: true,
+            required: true
         },
     },
     {
-        timestamps: true,
+        timestamps: true
     }
 );
 
