@@ -17,7 +17,8 @@ const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
         academicDepartment,
         academicFaculty,
         course,
-        faculty
+        faculty,
+        section
     } = payload;
 
     const checkField = async (fieldModel: any, id: Types.ObjectId, fieldName: string) => {
@@ -30,11 +31,29 @@ const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
 
     const semesterReg = await checkField(SemesterRegistration, semesterRegistration, "Semester registration");
     const academicSemester = semesterReg.academicSemester;
-
-    await checkField(AcademicDepartment, academicDepartment, "Academic department");
-    await checkField(AcademicFaculty, academicFaculty, "Academic faculty");
+    const acadmcDepartment = await checkField(AcademicDepartment, academicDepartment, "Academic department");
+    const acadmcFaculty = await checkField(AcademicFaculty, academicFaculty, "Academic faculty");
     await checkField(Course, course, "Course");
     await checkField(Faculty, faculty, "Faculty");
+
+    // is the faculty belongs to the department
+    const isTheFacultyBelongsToTheDepartment = await AcademicDepartment.findOne({
+        _id: academicDepartment,
+        academicFaculty
+    });
+    if (!isTheFacultyBelongsToTheDepartment) {
+        throw new AppError(httpStatus.BAD_REQUEST, `${acadmcFaculty?.name} is not belongs to The ${acadmcDepartment?.name}!`);
+    }
+
+    // is the course already exist with same section
+    const isTheCourseAlreadyExistWithSameSection = await OfferedCourse.findOne({
+        semesterRegistration,
+        course,
+        section
+    });
+    if (isTheCourseAlreadyExistWithSameSection) {
+        throw new AppError(httpStatus.BAD_REQUEST, "This course is already exist in this section with the same registered semester!");
+    }
 
     const dbRes = await OfferedCourse.create({ ...payload, academicSemester });
     return dbRes;
