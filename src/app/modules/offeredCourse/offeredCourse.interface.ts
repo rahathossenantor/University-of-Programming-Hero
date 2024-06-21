@@ -13,5 +13,11 @@ export type TOfferedCourse = {
     section: number;
     days: TDays[];
     startTime: string;
-    endTime: string;
+    endTime: string
+};
+
+export type TSchedule = {
+    days: TDays[];
+    startTime: string;
+    endTime: string
 };

@@ -9,6 +9,7 @@ import { AcademicFaculty } from "../academicFaculty/academicFaculty.model";
 import { Course } from "../course/course.model";
 import { Faculty } from "../faculty/faculty.model";
 import { Types } from "mongoose";
+import { hasTimeConfliction } from "./offeredCourse.utils";
 
 // create offered course
 const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
@@ -18,7 +19,10 @@ const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
         academicFaculty,
         course,
         faculty,
-        section
+        section,
+        days,
+        startTime,
+        endTime
     } = payload;
 
     const checkField = async (fieldModel: any, id: Types.ObjectId, fieldName: string) => {
@@ -53,6 +57,29 @@ const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
     });
     if (isTheCourseAlreadyExistWithSameSection) {
         throw new AppError(httpStatus.BAD_REQUEST, "This course is already exist in this section with the same registered semester!");
+    }
+
+    // get the schedules of the faculties
+    const assignedSchedules = await OfferedCourse.find({
+        semesterRegistration,
+        faculty,
+        days: { $in: days }
+    }, {
+        days: 1,
+        startTime: 1,
+        endTime: 1
+    });
+    const newSchedule = {
+        days,
+        startTime,
+        endTime
+    };
+
+    if (hasTimeConfliction(assignedSchedules, newSchedule)) {
+        throw new AppError(
+            httpStatus.CONFLICT,
+            `This faculty is not available at that time! Choose other time or day.`
+        );
     }
 
     const dbRes = await OfferedCourse.create({ ...payload, academicSemester });
