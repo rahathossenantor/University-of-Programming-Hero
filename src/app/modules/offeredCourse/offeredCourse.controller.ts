@@ -13,6 +13,19 @@ const createOfferedCourse = catchAsync(async (req, res) => {
     });
 });
 
+// update offered course
+const updateOfferedCourse = catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const dbRes = await OfferedCourseServices.updateOfferedCourseIntoDB(id, req.body);
+
+    res.status(httpStatus.OK).json({
+        success: true,
+        message: "Offered course is updated succesfully.",
+        data: dbRes
+    });
+});
+
 export const OfferedCourseControllers = {
-    createOfferedCourse
+    createOfferedCourse,
+    updateOfferedCourse
 };
