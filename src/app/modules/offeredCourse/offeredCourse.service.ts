@@ -10,6 +10,7 @@ import { Course } from "../course/course.model";
 import { Faculty } from "../faculty/faculty.model";
 import { Types } from "mongoose";
 import { hasTimeConfliction } from "./offeredCourse.utils";
+import QueryBuilder from "../../builder/QueryBuilder";
 
 // create offered course
 const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
@@ -86,6 +87,23 @@ const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
     return dbRes;
 };
 
+// get all offered courses
+const getAllOfferedCoursesFromDB = async (query: Record<string, unknown>) => {
+    const offeredCourseQuery = new QueryBuilder(OfferedCourse.find(), query)
+        .filter()
+        .sort()
+        .paginate();
+
+    const dbRes = await offeredCourseQuery.modelQuery;
+    return dbRes;
+};
+
+// get single offered course
+const getSingleOfferedCourseFromDB = async (id: string) => {
+    const dbRes = await OfferedCourse.findById(id);
+    return dbRes;
+};
+
 // update offered course
 const updateOfferedCourseIntoDB = async (
     id: string,
@@ -147,21 +165,9 @@ const updateOfferedCourseIntoDB = async (
     return dbRes;
 };
 
-// get all offered courses
-const getAllOfferedCoursesFromDB = async () => {
-    const dbRes = await OfferedCourse.find();
-    return dbRes;
-};
-
-// get single offered course
-const getSingleOfferedCourseFromDB = async (id: string) => {
-    const dbRes = await OfferedCourse.findById(id);
-    return dbRes;
-};
-
 export const OfferedCourseServices = {
     createOfferedCourseIntoDB,
-    updateOfferedCourseIntoDB,
     getAllOfferedCoursesFromDB,
-    getSingleOfferedCourseFromDB
+    getSingleOfferedCourseFromDB,
+    updateOfferedCourseIntoDB
 };
