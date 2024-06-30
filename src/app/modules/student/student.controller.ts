@@ -2,7 +2,7 @@ import { StudentServices } from "./student.service";
 import httpStatus from "http-status";
 import catchAsync from "../../utils/catchAsync";
 
-// get all students from students collection
+// get all students
 const getAllStudents = catchAsync(async (req, res) => {
     const dbRes = await StudentServices.getAllStudentsFromDB(req.query);
 
