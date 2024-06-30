@@ -13,7 +13,7 @@ const getAllStudents = catchAsync(async (req, res) => {
     });
 });
 
-// get single student from students collection
+// get single student
 const getSingleStudent = catchAsync(async (req, res) => {
     const { id } = req.params;
     const dbRes = await StudentServices.getSingleStudentFromDB(id);
