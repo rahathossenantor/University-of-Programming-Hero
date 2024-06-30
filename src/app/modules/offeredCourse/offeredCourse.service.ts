@@ -153,8 +153,15 @@ const getAllOfferedCoursesFromDB = async () => {
     return dbRes;
 };
 
+// get single offered course
+const getSingleOfferedCourseFromDB = async (id: string) => {
+    const dbRes = await OfferedCourse.findById(id);
+    return dbRes;
+};
+
 export const OfferedCourseServices = {
     createOfferedCourseIntoDB,
     updateOfferedCourseIntoDB,
-    getAllOfferedCoursesFromDB
+    getAllOfferedCoursesFromDB,
+    getSingleOfferedCourseFromDB
 };
