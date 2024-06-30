@@ -147,7 +147,14 @@ const updateOfferedCourseIntoDB = async (
     return dbRes;
 };
 
+// get all offered courses
+const getAllOfferedCoursesFromDB = async () => {
+    const dbRes = await OfferedCourse.find();
+    return dbRes;
+};
+
 export const OfferedCourseServices = {
     createOfferedCourseIntoDB,
-    updateOfferedCourseIntoDB
+    updateOfferedCourseIntoDB,
+    getAllOfferedCoursesFromDB
 };
