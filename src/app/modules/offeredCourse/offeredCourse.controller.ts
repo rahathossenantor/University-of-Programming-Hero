@@ -13,6 +13,17 @@ const createOfferedCourse = catchAsync(async (req, res) => {
     });
 });
 
+// get all offered courses
+const getAllOfferedCourses = catchAsync(async (req, res) => {
+    const dbRes = await OfferedCourseServices.getAllOfferedCoursesFromDB(req.query);
+
+    res.status(httpStatus.OK).json({
+        success: true,
+        message: (dbRes.length ? "Offered courses are retrived successfully." : "No offered course found!"),
+        data: dbRes
+    });
+});
+
 // update offered course
 const updateOfferedCourse = catchAsync(async (req, res) => {
     const { id } = req.params;
@@ -27,5 +38,6 @@ const updateOfferedCourse = catchAsync(async (req, res) => {
 
 export const OfferedCourseControllers = {
     createOfferedCourse,
+    getAllOfferedCourses,
     updateOfferedCourse
 };
