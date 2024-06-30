@@ -89,16 +89,16 @@ const updateSemesterRegistrationIntoDB = async (id: string, payload: Partial<TSe
 
 // delete semester registration and it's courses
 const deleteSemesterRegistrationFromDB = async (id: string) => {
-    const isSemesterRegistrationExist = await SemesterRegistration.findById(id);
-    if (!isSemesterRegistrationExist) {
+    const semesterRegistration = await SemesterRegistration.findById(id);
+    if (!semesterRegistration) {
         throw new AppError(
             httpStatus.NOT_FOUND,
-            "This registered semester is not found!"
+            "Semester registration is not found!"
         );
     }
 
     // checking if the status is still "UPCOMING"
-    const semesterRegistrationStatus = isSemesterRegistrationExist.status;
+    const semesterRegistrationStatus = semesterRegistration.status;
     if (semesterRegistrationStatus !== "UPCOMING") {
         throw new AppError(
             httpStatus.BAD_REQUEST,
