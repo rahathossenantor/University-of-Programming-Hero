@@ -38,7 +38,7 @@ const updateStudent = catchAsync(async (req, res) => {
     });
 });
 
-// delete single student from students collection
+// delete student
 const deleteStudent = catchAsync(async (req, res) => {
     const { id } = req.params;
     const dbRes = await StudentServices.deleteStudentFromDB(id);
