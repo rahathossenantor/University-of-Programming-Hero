@@ -6,7 +6,7 @@ import { TLoginUser } from "./auth.interface";
 
 const loginUser = async (payload: TLoginUser) => {
     // checking if the user is exist
-    const user = await User.findOne({ id: payload.id });
+    const user = await User.isUserExistByCustomId(payload.id);
     if (!user) {
         throw new AppError(httpStatus.NOT_FOUND, "User is not found!");
     }
