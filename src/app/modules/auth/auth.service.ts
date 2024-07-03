@@ -1,6 +1,5 @@
 import httpStatus from "http-status";
 import AppError from "../../errors/AppError";
-import bcrypt from "bcrypt";
 import { User } from "../user/user.model";
 import { TLoginUser } from "./auth.interface";
 
@@ -24,8 +23,7 @@ const loginUser = async (payload: TLoginUser) => {
     }
 
     // checking if the password is correct
-    const isPasswordMatched = await bcrypt.compare(payload.password, user.password);
-    if (!isPasswordMatched) {
+    if (!await User.isPasswordMatched(payload.password, user.password)) {
         throw new AppError(httpStatus.FORBIDDEN, "Password does not matched!");
     }
     return payload;
