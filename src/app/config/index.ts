@@ -8,7 +8,8 @@ const config = {
     port: process.env.PORT,
     database_url: process.env.DATABASE_URL,
     default_pass: process.env.DEFAULT_PASSWORD,
-    bcrypt_salt_rounds: process.env.BCRYPT_SALT_ROUNDS
+    bcrypt_salt_rounds: process.env.BCRYPT_SALT_ROUNDS,
+    jwt_access_secret: process.env.JWT_ACCESS_SECRET
 };
 
 export default config;
