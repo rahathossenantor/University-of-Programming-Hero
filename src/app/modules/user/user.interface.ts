@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { Model } from "mongoose";
+import { userRoles } from "./user.constant";
 
 export interface TUser {
     id: string;
@@ -9,6 +10,8 @@ export interface TUser {
     status: "in-progress" | "blocked";
     isDeleted: boolean;
 }
+
+export type TUserRoles = keyof typeof userRoles;
 
 export interface UserModel extends Model<TUser> {
     isUserExistByCustomId(id: string): Promise<TUser>;
