@@ -10,5 +10,10 @@ router.post(
     validateRequest(AuthValidations.LoginValidationSchema),
     AuthControllers.loginUser
 );
+router.post(
+    "/change-password",
+    validateRequest(AuthValidations.PasswordChangeValidationSchema),
+    AuthControllers.changePassword
+);
 
 export const AuthRoutes = router;
