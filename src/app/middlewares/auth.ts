@@ -5,6 +5,8 @@ import httpStatus from "http-status";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import config from "../config";
 import { TUserRoles } from "../modules/user/user.interface";
+import validateUser from "../utils/validateUser";
+import { User } from "../modules/user/user.model";
 
 const auth = (...roles: TUserRoles[]) => {
     return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
@@ -14,17 +16,24 @@ const auth = (...roles: TUserRoles[]) => {
         }
 
         // check if the token is valid
-        jwt.verify(token, config.jwt_access_secret as string, (err, decoded) => {
-            if (err) {
-                throw new AppError(httpStatus.UNAUTHORIZED, "Unauthorized request!");
-            }
-            if (roles && !roles.includes((decoded as JwtPayload).role)) {
-                throw new AppError(httpStatus.UNAUTHORIZED, "Unauthorized request!");
-            }
+        const decoded = jwt.verify(token, config.jwt_access_secret as string) as JwtPayload;
 
-            req.user = decoded as JwtPayload;
-            next();
-        });
+        // validate the user
+        const user = await validateUser(decoded.id);
+
+        if (
+            user.passwordChangedAt &&
+            User.isJWTIssuedBeforePasswordChange( user.passwordChangedAt, decoded.iat as number )
+        ) {
+            throw new AppError(httpStatus.UNAUTHORIZED, "Unauthorized request!");
+        }
+        
+        if (roles && !roles.includes(decoded.role)) {
+            throw new AppError(httpStatus.UNAUTHORIZED, "Unauthorized request!");
+        }
+
+        req.user = decoded;
+        next();
     });
 };
 
