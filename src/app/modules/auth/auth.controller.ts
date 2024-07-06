@@ -7,7 +7,7 @@ import config from "../../config";
 const loginUser = catchAsync(async (req, res) => {
     const dbRes = await AuthServices.loginUser(req.body);
     const { refreshToken } = dbRes;
-    res.cookie("refreshToken", refreshToken, { secure: config.node_env === "production" })
+    res.cookie("refreshToken", refreshToken, { secure: config.node_env === "production", httpOnly: true })
 
     res.status(httpStatus.OK).json({
         success: true,
