@@ -6,9 +6,11 @@ import { User } from "../user/user.model";
 import { TLoginUser } from "./auth.interface";
 import config from "../../config";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import validateUser from "../../utils/validateUser";
 import { createToken } from "./auth.utils";
 
+// login user
 const loginUser = async (payload: TLoginUser) => {
     // validate the user
     const user = await validateUser(payload.id);
@@ -18,7 +20,7 @@ const loginUser = async (payload: TLoginUser) => {
         throw new AppError(httpStatus.FORBIDDEN, "Password does not matched!");
     }
 
-    // create jwt token and sent to the client
+    // create jwt token
     const jwtPayload = {
         id: user.id,
         role: user.role
@@ -33,13 +35,14 @@ const loginUser = async (payload: TLoginUser) => {
     };
 };
 
+// change user password
 const changePassword = async (
     userData: JwtPayload,
     payload: { oldPassword: string, newPassword: string }
 ) => {
     // validate the user
     const user = await validateUser(userData.id);
-    
+
     // checking if the password is correct
     if (!await User.isPasswordMatched(payload.oldPassword, user.password)) {
         throw new AppError(httpStatus.FORBIDDEN, "Password does not matched!");
@@ -59,7 +62,35 @@ const changePassword = async (
     return null;
 };
 
+// get access token by refresh token
+const getAccessToken = async (refreshToken: string) => {
+    // check if the token is valid
+    const decoded = jwt.verify(refreshToken, config.jwt_refresh_secret as string) as JwtPayload;
+
+    // validate the user
+    const user = await validateUser(decoded.id);
+
+    if (
+        user.passwordChangedAt &&
+        User.isJWTIssuedBeforePasswordChange(user.passwordChangedAt, decoded.iat as number)
+    ) {
+        throw new AppError(httpStatus.UNAUTHORIZED, "Unauthorized request!");
+    }
+
+    // create jwt token
+    const jwtPayload = {
+        id: user.id,
+        role: user.role
+    };
+    const accessToken = createToken(jwtPayload, config.jwt_access_secret as string, config.jwt_access_expires_in as string);
+    
+    return {
+        accessToken
+    };
+};
+
 export const AuthServices = {
     loginUser,
-    changePassword
+    changePassword,
+    getAccessToken
 };
