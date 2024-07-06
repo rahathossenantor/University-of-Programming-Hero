@@ -28,8 +28,8 @@ const changePassword = catchAsync(async (req, res) => {
 });
 
 // get access token by refresh token
-const getAccessToken = catchAsync(async (req, res) => {
-    const dbRes = await AuthServices.getAccessToken(req.cookies.refreshToken);
+const getAccessTokenByRefreshToken = catchAsync(async (req, res) => {
+    const dbRes = await AuthServices.getAccessTokenByRefreshToken(req.cookies.refreshToken);
 
     res.status(httpStatus.OK).json({
         success: true,
@@ -41,5 +41,5 @@ const getAccessToken = catchAsync(async (req, res) => {
 export const AuthControllers = {
     loginUser,
     changePassword,
-    getAccessToken
+    getAccessTokenByRefreshToken
 };

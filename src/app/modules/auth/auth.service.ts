@@ -63,7 +63,7 @@ const changePassword = async (
 };
 
 // get access token by refresh token
-const getAccessToken = async (refreshToken: string) => {
+const getAccessTokenByRefreshToken = async (refreshToken: string) => {
     // check if the token is valid
     const decoded = jwt.verify(refreshToken, config.jwt_refresh_secret as string) as JwtPayload;
 
@@ -92,5 +92,5 @@ const getAccessToken = async (refreshToken: string) => {
 export const AuthServices = {
     loginUser,
     changePassword,
-    getAccessToken
+    getAccessTokenByRefreshToken
 };
