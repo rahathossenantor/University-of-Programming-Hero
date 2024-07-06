@@ -1,8 +1,9 @@
 import httpStatus from "http-status";
 import AppError from "../errors/AppError";
 import { User } from "../modules/user/user.model";
+import { TUser } from "../modules/user/user.interface";
 
-const validateUser = async (id: string) => {
+const validateUser = async (id: string): Promise<TUser> => {
     // checking if the user is exist
     const user = await User.isUserExistByCustomId(id);
     if (!user) {

@@ -9,11 +9,12 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import validateUser from "../../utils/validateUser";
 import { createToken } from "./auth.utils";
+import { TUser } from "../user/user.interface";
 
 // login user
 const loginUser = async (payload: TLoginUser) => {
     // validate the user
-    const user = await validateUser(payload.id);
+    const user: TUser = await validateUser(payload.id);
 
     // checking if the password is correct
     if (!await User.isPasswordMatched(payload.password, user.password)) {
@@ -41,7 +42,7 @@ const changePassword = async (
     payload: { oldPassword: string, newPassword: string }
 ) => {
     // validate the user
-    const user = await validateUser(userData.id);
+    const user: TUser = await validateUser(userData.id);
 
     // checking if the password is correct
     if (!await User.isPasswordMatched(payload.oldPassword, user.password)) {
@@ -68,7 +69,7 @@ const getAccessTokenByRefreshToken = async (refreshToken: string) => {
     const decoded = jwt.verify(refreshToken, config.jwt_refresh_secret as string) as JwtPayload;
 
     // validate the user
-    const user = await validateUser(decoded.id);
+    const user: TUser = await validateUser(decoded.id);
 
     if (
         user.passwordChangedAt &&
@@ -89,8 +90,24 @@ const getAccessTokenByRefreshToken = async (refreshToken: string) => {
     };
 };
 
+// reset password
+const forgetPassword = async (id: string) => {
+    const user: TUser = await validateUser(id);
+
+    // create jwt token
+    const jwtPayload = {
+        id: user.id,
+        role: user.role
+    };
+    const accessToken = createToken(jwtPayload, config.jwt_access_secret as string, config.jwt_access_expires_in as string);
+
+    const resetLink: string = `http://localhost:3000?user=${user.id}&token=${accessToken}`;
+    return resetLink;
+};
+
 export const AuthServices = {
     loginUser,
     changePassword,
-    getAccessTokenByRefreshToken
+    getAccessTokenByRefreshToken,
+    forgetPassword
 };
