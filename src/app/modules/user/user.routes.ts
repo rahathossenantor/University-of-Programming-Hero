@@ -36,7 +36,7 @@ router.post(
 router.get(
     "/me",
     auth("admin", "faculty", "student"),
-    UserControllers.createAdmin
+    UserControllers.getMe
 );
 
 export const UserRoutes = router;
