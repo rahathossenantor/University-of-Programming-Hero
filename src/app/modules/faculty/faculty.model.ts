@@ -1,37 +1,7 @@
 import { Schema, model } from "mongoose";
-import { FacultyModel, TFaculty, TName } from "./faculty.interface";
-
-const nameSchema = new Schema<TName>({
-    firstName: {
-        type: String,
-        required: true,
-        validate: {
-            validator: (fName: string) => {
-                const splittedName = fName.trim().split(" ");
-                const capitalizedName = splittedName.map(word => (word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()));
-                const userName = capitalizedName.join(" ");
-                return userName === fName;
-            },
-            message: props => `${props.value} is not a valid format!`
-        }
-    },
-    middleName: {
-        type: String
-    },
-    lastName: {
-        type: String,
-        required: true,
-        validate: {
-            validator: (lName: string) => {
-                const splittedName = lName.trim().split(" ");
-                const capitalizedName = splittedName.map(word => (word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()));
-                const userName = capitalizedName.join(" ");
-                return userName === lName;
-            },
-            message: props => `${props.value} is not a valid format!`
-        }
-    }
-});
+import { FacultyModel, TFaculty } from "./faculty.interface";
+import { nameSchema } from "../../schema/global.schema";
+import { bloodGroupes, genders } from "../../constant/global.constant";
 
 const facultySchema = new Schema<TFaculty, FacultyModel>(
     {
@@ -55,7 +25,7 @@ const facultySchema = new Schema<TFaculty, FacultyModel>(
         },
         gender: {
             type: String,
-            enum: ["male", "female", "other"],
+            enum: genders,
             required: true
         },
         dateOfBirth: {
@@ -81,20 +51,7 @@ const facultySchema = new Schema<TFaculty, FacultyModel>(
         },
         bloodGroup: {
             type: String,
-            enum: [
-                "A",
-                "B",
-                "AB",
-                "O",
-                "A+",
-                "A-",
-                "B+",
-                "B-",
-                "AB+",
-                "AB-",
-                "O+",
-                "O-",
-            ]
+            enum: bloodGroupes
         },
         presentAddress: {
             type: String
@@ -130,9 +87,8 @@ facultySchema.pre("aggregate", function (next) {
     next();
 });
 
-facultySchema.statics.isUserExists = async function (id: string) {
-    const existingUser = await Faculty.findOne({ id });
-    return existingUser;
+facultySchema.statics.isFacultyExist = async function (id: string) {
+    return await Faculty.findOne({ id });
 };
 
 export const Faculty = model<TFaculty, FacultyModel>("Faculty", facultySchema);

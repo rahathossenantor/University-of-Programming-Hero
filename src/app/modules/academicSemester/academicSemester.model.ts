@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 import { TAcademicSemester } from "./academicSemester.interface";
-import { academicSemesterCodes, academicSemesterNames, months } from "./academicSemester.constants";
+import { academicSemesterCodes, academicSemesterNames, months } from "./academicSemester.constant";
 import AppError from "../../errors/AppError";
 import httpStatus from "http-status";
 

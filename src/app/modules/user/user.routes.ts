@@ -4,11 +4,13 @@ import { StudentValidations } from "../student/student.validation";
 import { FacultyValidations } from "../faculty/faculty.validation";
 import { AdminValidations } from "../admin/admin.validation";
 import validateRequest from "../../middlewares/validateRequest";
+import auth from "../../middlewares/auth";
 
 const router = Router();
 
 router.post(
     "/create-student",
+    auth("admin"),
     validateRequest(
         StudentValidations.StudentCreationValidationSchema
     ),
@@ -17,6 +19,7 @@ router.post(
 
 router.post(
     "/create-faculty",
+    auth("admin"),
     validateRequest(
         FacultyValidations.FacultyCreationValidationSchema
     ),
@@ -25,6 +28,7 @@ router.post(
 
 router.post(
     "/create-admin",
+    auth("admin"),
     validateRequest(AdminValidations.AdminCreationValidationSchema),
     UserControllers.createAdmin
 );

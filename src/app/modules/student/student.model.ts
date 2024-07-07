@@ -1,39 +1,9 @@
 import { Schema, model } from "mongoose";
-import { TName, TParents, TGuardian, TStudent, TStudentModel, TStudentMethods } from "./student.interface";
+import { TParents, TGuardian, TStudent, TStudentModel, TStudentMethods } from "./student.interface";
 import AppError from "../../errors/AppError";
 import httpStatus from "http-status";
-
-const nameSchema = new Schema<TName>({
-    firstName: {
-        type: String,
-        required: true,
-        validate: {
-            validator: (fName: string) => {
-                const splittedName = fName.trim().split(" ");
-                const capitalizedName = splittedName.map(word => (word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()));
-                const userName = capitalizedName.join(" ");
-                return userName === fName;
-            },
-            message: props => `${props.value} is not a valid format!`
-        }
-    },
-    middleName: {
-        type: String
-    },
-    lastName: {
-        type: String,
-        required: true,
-        validate: {
-            validator: (lName: string) => {
-                const splittedName = lName.trim().split(" ");
-                const capitalizedName = splittedName.map(word => (word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()));
-                const userName = capitalizedName.join(" ");
-                return userName === lName;
-            },
-            message: props => `${props.value} is not a valid format!`
-        }
-    }
-});
+import { nameSchema } from "../../schema/global.schema";
+import { bloodGroupes, genders } from "../../constant/global.constant";
 
 const parentsSchema = new Schema<TParents>({
     fatherName: {
@@ -60,6 +30,8 @@ const parentsSchema = new Schema<TParents>({
         type: String,
         required: true
     }
+}, {
+    _id: false
 });
 
 const guardianSchema = new Schema<TGuardian>({
@@ -79,6 +51,8 @@ const guardianSchema = new Schema<TGuardian>({
         type: String,
         required: true
     }
+}, {
+    _id: false
 });
 
 const studentSchema = new Schema<TStudent, TStudentModel, TStudentMethods>({
@@ -98,7 +72,7 @@ const studentSchema = new Schema<TStudent, TStudentModel, TStudentMethods>({
     },
     gender: {
         type: String,
-        enum: ["male", "female", "other"],
+        enum: genders,
         required: true
     },
     dateOfBirth: {
@@ -128,20 +102,7 @@ const studentSchema = new Schema<TStudent, TStudentModel, TStudentMethods>({
     },
     bloodGroup: {
         type: String,
-        enum: [
-            "A",
-            "B",
-            "AB",
-            "O",
-            "A+",
-            "A-",
-            "B+",
-            "B-",
-            "AB+",
-            "AB-",
-            "O+",
-            "O-",
-        ]
+        enum: bloodGroupes
     },
     presentAddress: {
         type: String
@@ -162,7 +123,8 @@ const studentSchema = new Schema<TStudent, TStudentModel, TStudentMethods>({
         type: String
     },
     isDeleted: { type: Boolean, default: false }
-}, {
+},
+{
     toJSON: {
         virtuals: true
     }
@@ -175,8 +137,7 @@ studentSchema.virtual("fullName").get(function () {
 });
 
 studentSchema.methods.isUserExist = async function (id: string) {
-    const existingStudent = await Student.findOne({ id });
-    return existingStudent;
+    return await Student.findOne({ id });
 };
 
 // query middlewares

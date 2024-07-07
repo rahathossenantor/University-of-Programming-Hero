@@ -6,13 +6,16 @@ import config from "../../config";
 // login user
 const loginUser = catchAsync(async (req, res) => {
     const dbRes = await AuthServices.loginUser(req.body);
-    const { refreshToken } = dbRes;
-    res.cookie("refreshToken", refreshToken, { secure: config.node_env === "production", httpOnly: true })
+    const { accessToken, refreshToken, needsPasswordChange } = dbRes;
+    res.cookie("refreshToken", refreshToken, { secure: config.node_env === "production", httpOnly: true });
 
     res.status(httpStatus.OK).json({
         success: true,
         message: "Login succesfull.",
-        data: dbRes
+        data: {
+            accessToken,
+            needsPasswordChange
+        }
     });
 });
 

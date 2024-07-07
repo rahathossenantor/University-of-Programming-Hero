@@ -39,7 +39,7 @@ export type TStudent = {
 
 export type TStudentMethods = {
     // eslint-disable-next-line no-unused-vars
-    isUserExist(id: string): Promise<TStudent | null>;
+    isStudentExist(id: string): Promise<TStudent | null>;
 };
 
 export type TStudentModel = Model<TStudent, Record<string, never>, TStudentMethods>;

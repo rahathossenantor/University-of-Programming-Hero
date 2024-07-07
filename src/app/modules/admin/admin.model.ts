@@ -1,37 +1,7 @@
 import { Schema, model } from "mongoose";
-import { AdminModel, TAdmin, TName } from "./admin.interface";
-
-const nameSchema = new Schema<TName>({
-  firstName: {
-    type: String,
-    required: true,
-    validate: {
-      validator: (fName: string) => {
-        const splittedName = fName.trim().split(" ");
-        const capitalizedName = splittedName.map(word => (word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()));
-        const userName = capitalizedName.join(" ");
-        return userName === fName;
-      },
-      message: props => `${props.value} is not a valid format!`
-    }
-  },
-  middleName: {
-    type: String
-  },
-  lastName: {
-    type: String,
-    required: true,
-    validate: {
-      validator: (lName: string) => {
-        const splittedName = lName.trim().split(" ");
-        const capitalizedName = splittedName.map(word => (word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()));
-        const userName = capitalizedName.join(" ");
-        return userName === lName;
-      },
-      message: props => `${props.value} is not a valid format!`
-    }
-  }
-});
+import { AdminModel, TAdmin } from "./admin.interface";
+import { nameSchema } from "../../schema/global.schema";
+import { bloodGroupes, genders } from "../../constant/global.constant";
 
 const adminSchema = new Schema<TAdmin, AdminModel>(
   {
@@ -55,7 +25,7 @@ const adminSchema = new Schema<TAdmin, AdminModel>(
     },
     gender: {
       type: String,
-      enum: ["male", "female", "other"],
+      enum: genders,
       required: true
     },
     dateOfBirth: {
@@ -77,20 +47,7 @@ const adminSchema = new Schema<TAdmin, AdminModel>(
     },
     bloodGroup: {
       type: String,
-      enum: [
-        "A",
-        "B",
-        "AB",
-        "O",
-        "A+",
-        "A-",
-        "B+",
-        "B-",
-        "AB+",
-        "AB-",
-        "O+",
-        "O-",
-      ]
+      enum: bloodGroupes
     },
     presentAddress: {
       type: String
@@ -126,9 +83,8 @@ adminSchema.pre("aggregate", function (next) {
   next();
 });
 
-adminSchema.statics.isUserExists = async function (id: string) {
-  const existingUser = await Admin.findOne({ id });
-  return existingUser;
+adminSchema.statics.isAdminExist = async function (id: string) {
+  return await Admin.findOne({ id });
 };
 
 export const Admin = model<TAdmin, AdminModel>("Admin", adminSchema);
