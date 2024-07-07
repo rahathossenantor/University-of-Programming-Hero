@@ -15,7 +15,7 @@ import hashPassword from "../../utils/hashPassword";
 
 // login user
 const loginUser = async (payload: TLoginUser) => {
-    // validate the user
+    // check if the user is valid
     const user: TUser = await validateUser(payload.id);
     await checkUserPassword(payload.password, user.password);
 
@@ -39,7 +39,7 @@ const changePassword = async (
     userData: JwtPayload,
     payload: { oldPassword: string, newPassword: string }
 ) => {
-    // validate the user
+    // check if the user is valid
     const user: TUser = await validateUser(userData.id);
     await checkUserPassword(payload.oldPassword, user.password);
 
@@ -62,7 +62,7 @@ const getAccessTokenByRefreshToken = async (refreshToken: string) => {
     // check if the token is valid
     const decoded = jwt.verify(refreshToken, config.jwt_refresh_secret as string) as JwtPayload;
 
-    // validate the user
+    // check if the user is valid
     const user: TUser = await validateUser(decoded.id);
 
     if (
@@ -86,6 +86,7 @@ const getAccessTokenByRefreshToken = async (refreshToken: string) => {
 
 // forget password
 const forgetPassword = async (id: string) => {
+    // check if the user is valid
     const user: TUser = await validateUser(id);
 
     // create jwt token and reset link
@@ -103,9 +104,31 @@ const forgetPassword = async (id: string) => {
     // return null;
 };
 
+// reset password
+const resetPassword = async (payload: {id: string, newPassword: string}, token: string) => {
+    // check if the user is valid
+    await validateUser(payload.id);
+    const decoded = jwt.verify(token, config.jwt_access_secret as string) as JwtPayload;
+    if (payload.id !== decoded.id) {
+        throw new AppError(httpStatus.FORBIDDEN, "Forbidden!");
+    }
+
+    const newHashedPassword = await hashPassword(payload.newPassword);
+    await User.findOneAndUpdate({
+        id: decoded.id,
+        role: decoded.role
+    }, {
+        password: newHashedPassword,
+        needsPasswordChange: false,
+        passwordChangedAt: new Date()
+    });
+    return null
+};
+
 export const AuthServices = {
     loginUser,
     changePassword,
     getAccessTokenByRefreshToken,
-    forgetPassword
+    forgetPassword,
+    resetPassword
 };
