@@ -99,9 +99,9 @@ const forgetPassword = async (id: string) => {
         id: user.id,
         role: user.role
     };
-    const accessToken = createToken(jwtPayload, config.jwt_access_secret as string, config.jwt_access_expires_in as string);
+    const resetToken = createToken(jwtPayload, config.jwt_access_secret as string, "10m");
 
-    const resetLink: string = `http://localhost:3000?user=${user.id}&token=${accessToken}`;
+    const resetLink: string = `http://localhost:3000?user=${user.id}&token=${resetToken}`;
     return resetLink;
 };
 

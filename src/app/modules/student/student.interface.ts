@@ -1,10 +1,5 @@
 import { Model, Types } from "mongoose";
-
-export type TName = {
-    firstName: string;
-    middleName?: string;
-    lastName: string;
-};
+import { TBloodGroup, TGender, TName } from "../../interface/global.interface";
 
 export type TParents = {
     fatherName: string;
@@ -22,25 +17,11 @@ export type TGuardian = {
     address: string;
 };
 
-type TBloodGroup =
-    | "A"
-    | "B"
-    | "AB"
-    | "O"
-    | "A+"
-    | "A-"
-    | "B+"
-    | "B-"
-    | "AB+"
-    | "AB-"
-    | "O+"
-    | "O-";
-
 export type TStudent = {
     id: string;
     user: Types.ObjectId;
     name: TName;
-    gender: "male" | "female" | "other";
+    gender: TGender;
     dateOfBirth: string;
     email: string;
     academicSemester: Types.ObjectId,

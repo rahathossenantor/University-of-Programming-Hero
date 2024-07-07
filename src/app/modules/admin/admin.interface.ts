@@ -1,27 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { Model, Types } from "mongoose";
-
-export type TName = {
-  firstName: string;
-  middleName?: string;
-  lastName: string;
-};
-
-export type TGender = "male" | "female" | "other";
-
-type TBloodGroup =
-  | "A"
-  | "B"
-  | "AB"
-  | "O"
-  | "A+"
-  | "A-"
-  | "B+"
-  | "B-"
-  | "AB+"
-  | "AB-"
-  | "O+"
-  | "O-";
+import { TBloodGroup, TGender, TName } from "../../interface/global.interface";
 
 export type TAdmin = {
   id: string;
