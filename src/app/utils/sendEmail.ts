@@ -7,8 +7,8 @@ const sendEmail = async (email: string, resetLink: string) => {
         port: 587,
         secure: config.node_env === "production",
         auth: {
-            user: "md.rahathossenantor@gmail.com",
-            pass: "xsop wppo hqlb atmb"
+            user: config.smtp_user,
+            pass: config.smtp_pass
         }
     });
 

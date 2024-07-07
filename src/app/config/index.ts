@@ -13,7 +13,9 @@ const config = {
     jwt_refresh_secret: process.env.JWT_REFRESH_SECRET,
     jwt_access_expires_in: process.env.JWT_ACCESS_EXPIRES_IN,
     jwt_refresh_expires_in: process.env.JWT_REFRESH_EXPIRES_IN,
-    reset_password_url: process.env.RESET_PASSWORD_URL
+    reset_password_url: process.env.RESET_PASSWORD_URL,
+    smtp_user: process.env.SMTP_USER,
+    smtp_pass: process.env.SMTP_PASS
 };
 
 export default config;
