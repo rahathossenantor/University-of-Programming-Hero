@@ -10,6 +10,7 @@ import jwt from "jsonwebtoken";
 import validateUser from "../../utils/validateUser";
 import { createToken } from "./auth.utils";
 import { TUser } from "../user/user.interface";
+import sendEmail from "../../utils/sendEmail";
 
 // login user
 const loginUser = async (payload: TLoginUser) => {
@@ -94,15 +95,16 @@ const getAccessTokenByRefreshToken = async (refreshToken: string) => {
 const forgetPassword = async (id: string) => {
     const user: TUser = await validateUser(id);
 
-    // create jwt token
+    // create jwt token and reset link
     const jwtPayload = {
         id: user.id,
         role: user.role
     };
     const resetToken = createToken(jwtPayload, config.jwt_access_secret as string, "10m");
-
-    const resetLink: string = `http://localhost:3000?user=${user.id}&token=${resetToken}`;
-    return resetLink;
+    const resetLink: string = `${config.reset_password_url}?user=${user.id}&token=${resetToken}`;
+    
+    await sendEmail(user.email, resetLink);
+    return null;
 };
 
 export const AuthServices = {
