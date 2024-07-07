@@ -11,16 +11,13 @@ import validateUser from "../../utils/validateUser";
 import { createToken } from "./auth.utils";
 import { TUser } from "../user/user.interface";
 import sendEmail from "../../utils/sendEmail";
+import checkUserPassword from "../../utils/checkUserPassword";
 
 // login user
 const loginUser = async (payload: TLoginUser) => {
     // validate the user
     const user: TUser = await validateUser(payload.id);
-
-    // checking if the password is correct
-    if (!await User.isPasswordMatched(payload.password, user.password)) {
-        throw new AppError(httpStatus.FORBIDDEN, "Password does not matched!");
-    }
+    await checkUserPassword(payload.password, user.password);
 
     // create jwt token
     const jwtPayload = {
@@ -44,11 +41,7 @@ const changePassword = async (
 ) => {
     // validate the user
     const user: TUser = await validateUser(userData.id);
-
-    // checking if the password is correct
-    if (!await User.isPasswordMatched(payload.oldPassword, user.password)) {
-        throw new AppError(httpStatus.FORBIDDEN, "Password does not matched!");
-    }
+    await checkUserPassword(payload.oldPassword, user.password);
 
     // hashing new password
     const newHashedPassword = await bcrypt.hash(payload.newPassword, Number(config.bcrypt_salt_rounds));
@@ -91,7 +84,7 @@ const getAccessTokenByRefreshToken = async (refreshToken: string) => {
     };
 };
 
-// reset password
+// forget password
 const forgetPassword = async (id: string) => {
     const user: TUser = await validateUser(id);
 
@@ -104,7 +97,10 @@ const forgetPassword = async (id: string) => {
     const resetLink: string = `${config.reset_password_url}?user=${user.id}&token=${resetToken}`;
     
     await sendEmail(user.email, resetLink);
-    return null;
+    return {
+        resetToken
+    };
+    // return null;
 };
 
 export const AuthServices = {

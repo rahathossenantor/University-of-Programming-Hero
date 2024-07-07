@@ -40,12 +40,14 @@ const getAccessTokenByRefreshToken = catchAsync(async (req, res) => {
 
 // forget password
 const forgetPassword = catchAsync(async (req, res) => {
-    await AuthServices.forgetPassword(req.body.id);
+    // await AuthServices.forgetPassword(req.body.id);
+    const dbRes = await AuthServices.forgetPassword(req.body.id);
 
     res.status(httpStatus.OK).json({
         success: true,
         message: "Reset password link sent successfully.",
-        data: null
+        data: dbRes
+        // data: null
     });
 });
 
