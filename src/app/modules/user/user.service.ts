@@ -14,6 +14,7 @@ import mongoose from "mongoose";
 import AppError from "../../errors/AppError";
 import httpStatus from "http-status";
 import { AcademicDepartment } from "../academicDepartment/academicDepartment.model";
+import verifyToken from "../../utils/verifyToken";
 
 // create student
 const createStudentIntoDB = async (password: string, payload: TStudent) => {
@@ -141,8 +142,27 @@ const createAdminIntoDB = async (password: string, payload: TAdmin) => {
   }
 };
 
+// get me
+const getMe = async (token: string) => {
+  // check if the token is valid
+  const decoded = verifyToken(token, config.jwt_access_secret as string);
+  const { id, role } = decoded;
+
+  let dbRes = null;
+  if (role === "admin") {
+    dbRes = await Admin.findOne({ id })
+  } else if (role === "faculty") {
+    dbRes = await Admin.findOne({ id })
+  } else if (role === "student") {
+    dbRes = await Admin.findOne({ id })
+  }
+
+  return dbRes;
+};
+
 export const UserServices = {
   createStudentIntoDB,
   createFacultyIntoDB,
-  createAdminIntoDB
+  createAdminIntoDB,
+  getMe
 };

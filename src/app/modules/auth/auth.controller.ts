@@ -2,6 +2,7 @@ import httpStatus from "http-status";
 import catchAsync from "../../utils/catchAsync";
 import { AuthServices } from "./auth.service";
 import config from "../../config";
+import AppError from "../../errors/AppError";
 
 // login user
 const loginUser = catchAsync(async (req, res) => {
@@ -56,7 +57,11 @@ const forgetPassword = catchAsync(async (req, res) => {
 
 // reset password
 const resetPassword = catchAsync(async (req, res) => {
-    await AuthServices.resetPassword(req.body, req.headers.authorization as string);
+    const token = req.headers.authorization;
+    if (!token) {
+        throw new AppError(httpStatus.NOT_FOUND, "Token does not found!");
+    }
+    await AuthServices.resetPassword(req.body, token);
 
     res.status(httpStatus.OK).json({
         success: true,
