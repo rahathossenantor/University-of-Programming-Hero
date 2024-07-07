@@ -3,18 +3,17 @@ import { StudentControllers } from "./student.controller";
 import validateRequest from "../../middlewares/validateRequest";
 import { StudentValidations } from "./student.validation";
 import auth from "../../middlewares/auth";
-import { userRoles } from "../user/user.constant";
-import { TUserRoles } from "../user/user.interface";
 
 const router = Router();
 
-router.get("/", auth(userRoles.student as TUserRoles, userRoles.admin as TUserRoles), StudentControllers.getAllStudents);
-router.get("/:id", StudentControllers.getSingleStudent);
+router.get("/", auth("admin", "faculty"), StudentControllers.getAllStudents);
+router.get("/:id", auth("admin", "faculty"), StudentControllers.getSingleStudent);
 router.patch(
     "/:id",
+    auth("admin", "faculty"),
     validateRequest(StudentValidations.StudentUpdatationValidationSchema),
     StudentControllers.updateStudent
 );
-router.delete("/:id", StudentControllers.deleteStudent);
+router.delete("/:id", auth("admin", "faculty"), StudentControllers.deleteStudent);
 
 export const StudentRoutes = router;

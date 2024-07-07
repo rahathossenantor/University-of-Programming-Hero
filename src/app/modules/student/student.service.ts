@@ -3,9 +3,10 @@ import { Student } from "./student.model";
 import AppError from "../../errors/AppError";
 import httpStatus from "http-status";
 import { User } from "../user/user.model";
-import { TGuardian, TName, TParents, TStudent } from "./student.interface";
+import { TGuardian, TParents, TStudent } from "./student.interface";
 import QueryBuilder from "../../builder/QueryBuilder";
 import { studentSearchableFields } from "./student.constant";
+import { TName } from "../../interface/global.interface";
 
 // get all students
 const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
