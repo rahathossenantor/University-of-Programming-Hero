@@ -5,13 +5,13 @@ import { JwtPayload } from "jsonwebtoken";
 import { User } from "../user/user.model";
 import { TLoginUser } from "./auth.interface";
 import config from "../../config";
-import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import validateUser from "../../utils/validateUser";
 import { createToken } from "./auth.utils";
 import { TUser } from "../user/user.interface";
 import sendEmail from "../../utils/sendEmail";
 import checkUserPassword from "../../utils/checkUserPassword";
+import hashPassword from "../../utils/hashPassword";
 
 // login user
 const loginUser = async (payload: TLoginUser) => {
@@ -44,7 +44,7 @@ const changePassword = async (
     await checkUserPassword(payload.oldPassword, user.password);
 
     // hashing new password
-    const newHashedPassword = await bcrypt.hash(payload.newPassword, Number(config.bcrypt_salt_rounds));
+    const newHashedPassword = await hashPassword(payload.newPassword);
 
     await User.findOneAndUpdate({
         id: userData.id,
