@@ -1,3 +1,4 @@
+import AppError from "../../errors/AppError";
 import catchAsync from "../../utils/catchAsync";
 import { UserServices } from "./user.service";
 import httpStatus from "http-status";
@@ -38,8 +39,24 @@ const createAdmin = catchAsync(async (req, res) => {
     });
 });
 
+// get me
+const getMe = catchAsync(async (req, res) => {
+    const token = req.headers.authorization;
+    if (!token) {
+        throw new AppError(httpStatus.NOT_FOUND, "Token does not found!");
+    }
+    const dbRes = await UserServices.getMe(token);
+
+    res.status(httpStatus.OK).json({
+        success: true,
+        message: "My data retrived successfully.",
+        data: dbRes
+    });
+});
+
 export const UserControllers = {
     createStudent,
     createFaculty,
-    createAdmin
+    createAdmin,
+    getMe
 };

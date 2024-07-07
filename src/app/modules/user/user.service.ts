@@ -150,11 +150,18 @@ const getMe = async (token: string) => {
 
   let dbRes = null;
   if (role === "admin") {
-    dbRes = await Admin.findOne({ id })
+    dbRes = await Admin.findOne({ id });
   } else if (role === "faculty") {
-    dbRes = await Admin.findOne({ id })
+    dbRes = await Faculty.findOne({ id }).populate("academicDepartment");
   } else if (role === "student") {
-    dbRes = await Admin.findOne({ id })
+    dbRes = await Student.findOne({ id })
+      .populate("academicSemester")
+      .populate(
+        {
+          path: "academicDepartment",
+          populate: { path: "academicFaculty" }
+        }
+      );
   }
 
   return dbRes;
