@@ -145,8 +145,8 @@ const createAdminIntoDB = async (password: string, payload: TAdmin) => {
 // get me
 const getMe = async (user: JwtPayload) => {
   const { id, role } = user;
-
   let dbRes = null;
+
   if (role === "admin") {
     dbRes = await Admin.findOne({ id });
   } else if (role === "faculty") {
@@ -161,7 +161,12 @@ const getMe = async (user: JwtPayload) => {
         }
       );
   }
+  return dbRes;
+};
 
+// update user status
+const updateUserStatus = async (id: string, payload: { status: string }) => {
+  const dbRes = await User.findByIdAndUpdate(id, payload, { new: true });
   return dbRes;
 };
 
@@ -169,5 +174,6 @@ export const UserServices = {
   createStudentIntoDB,
   createFacultyIntoDB,
   createAdminIntoDB,
+  updateUserStatus,
   getMe
 };
