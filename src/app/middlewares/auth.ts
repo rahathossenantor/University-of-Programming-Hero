@@ -23,7 +23,7 @@ const auth = (...roles: TUserRoles[]) => {
 
         if (
             user.passwordChangedAt &&
-            User.isJWTIssuedBeforePasswordChange( user.passwordChangedAt, decoded.iat as number )
+            User.isJWTIssuedBeforePasswordChange(user.passwordChangedAt, decoded.iat as number)
         ) {
             throw new AppError(httpStatus.UNAUTHORIZED, "Unauthorized request!");
         }

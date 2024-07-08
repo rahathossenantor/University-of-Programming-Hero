@@ -1,4 +1,3 @@
-import AppError from "../../errors/AppError";
 import catchAsync from "../../utils/catchAsync";
 import { UserServices } from "./user.service";
 import httpStatus from "http-status";
@@ -41,11 +40,7 @@ const createAdmin = catchAsync(async (req, res) => {
 
 // get me
 const getMe = catchAsync(async (req, res) => {
-    const token = req.headers.authorization;
-    if (!token) {
-        throw new AppError(httpStatus.NOT_FOUND, "Token does not found!");
-    }
-    const dbRes = await UserServices.getMe(token);
+    const dbRes = await UserServices.getMe(req.user);
 
     res.status(httpStatus.OK).json({
         success: true,
