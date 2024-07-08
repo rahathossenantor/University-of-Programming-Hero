@@ -5,6 +5,7 @@ import { FacultyValidations } from "../faculty/faculty.validation";
 import { AdminValidations } from "../admin/admin.validation";
 import validateRequest from "../../middlewares/validateRequest";
 import auth from "../../middlewares/auth";
+import { UserValidations } from "./user.validation";
 
 const router = Router();
 
@@ -37,6 +38,13 @@ router.get(
     "/me",
     auth("admin", "faculty", "student"),
     UserControllers.getMe
+);
+
+router.patch(
+    "/update-status/:id",
+    auth("admin"),
+    validateRequest(UserValidations.UpdateUserStatusValidationSchema),
+    UserControllers.updateUserStatus
 );
 
 export const UserRoutes = router;
