@@ -166,6 +166,12 @@ const getMe = async (user: JwtPayload) => {
 
 // update user status
 const updateUserStatus = async (id: string, payload: { status: string }) => {
+  // checking if the user is exist
+  const user = await User.isUserExist(id);
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, "User is not found!");
+  }
+
   const dbRes = await User.findByIdAndUpdate(id, payload, { new: true });
   return dbRes;
 };
