@@ -49,9 +49,22 @@ const getMe = catchAsync(async (req, res) => {
     });
 });
 
+// update user status
+const updateUserStatus = catchAsync(async (req, res) => {
+    const id: string = req.params.id;
+    const dbRes = await UserServices.updateUserStatus(id, req.body);
+
+    res.status(httpStatus.OK).json({
+        success: true,
+        message: "User status updated successfully.",
+        data: dbRes
+    });
+});
+
 export const UserControllers = {
     createStudent,
     createFaculty,
     createAdmin,
+    updateUserStatus,
     getMe
 };
