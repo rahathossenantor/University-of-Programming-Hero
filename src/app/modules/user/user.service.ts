@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { TAcademicSemester } from "../academicSemester/academicSemester.interface";
 import { AcademicSemester } from "../academicSemester/academicSemester.model";
 import { TStudent } from "../student/student.interface";
@@ -15,9 +16,10 @@ import AppError from "../../errors/AppError";
 import httpStatus from "http-status";
 import { AcademicDepartment } from "../academicDepartment/academicDepartment.model";
 import { JwtPayload } from "jsonwebtoken";
+import uploadImage from "../../utils/uploadImage";
 
 // create student
-const createStudentIntoDB = async (password: string, payload: TStudent) => {
+const createStudentIntoDB = async (password: string, imagePath: string, payload: TStudent) => {
   const userData: Partial<TUser> = {};
   userData.password = password || config.default_pass as string;
   userData.role = "student";
@@ -32,6 +34,9 @@ const createStudentIntoDB = async (password: string, payload: TStudent) => {
 
   userData.id = await generateStudentId(academicSemester as TAcademicSemester);
 
+  // upload image to cloudinary
+  const uploadRes: any = await uploadImage(imagePath, `student-${userData.id}`);
+
   const session = await mongoose.startSession();
   try {
     session.startTransaction();
@@ -42,6 +47,7 @@ const createStudentIntoDB = async (password: string, payload: TStudent) => {
     }
     payload.id = user[0].id;
     payload.user = user[0]._id;
+    payload.avatar = uploadRes?.secure_url;
 
     // create student
     const student = await Student.create([payload], { session });

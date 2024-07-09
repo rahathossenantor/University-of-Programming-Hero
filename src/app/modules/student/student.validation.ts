@@ -29,7 +29,7 @@ const GuardianCreationSchema = z.object({
 // Define Zod schema for Student
 export const StudentCreationValidationSchema = z.object({
     body: z.object({
-        password: z.string(),
+        password: z.string().optional(),
         student: z.object({
             name: NameCreationSchema,
             gender: z.enum(["male", "female", "other"]),
@@ -43,8 +43,7 @@ export const StudentCreationValidationSchema = z.object({
             presentAddress: z.string().optional(),
             permanentAddress: z.string(),
             parents: ParentsCreationSchema,
-            guardian: GuardianCreationSchema,
-            avatar: z.string().optional()
+            guardian: GuardianCreationSchema
         })
     })
 });
