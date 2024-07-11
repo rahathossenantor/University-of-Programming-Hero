@@ -2,49 +2,6 @@ import { v2 as cloudinary } from "cloudinary";
 import multer from "multer";
 import config from "../config";
 import fs from "fs";
-import AppError from "../errors/AppError";
-import httpStatus from "http-status";
-
-cloudinary.config({
-    cloud_name: config.cloudinary_cloud_name,
-    api_key: config.cloudinary_api_key,
-    api_secret: config.cloudinary_api_secret
-});
-
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, process.cwd() + "/uploads/")
-    },
-    filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1E9);
-        cb(null, file.fieldname + "-" + uniqueSuffix);
-    }
-});
-export const upload = multer({ storage });
-
-const uploadImage = async (imagePath: string, imageName: string) => {
-    const uploadRes = await cloudinary.uploader
-        .upload(imagePath, { public_id: imageName })
-        .catch((err) => {
-            throw new AppError(httpStatus.INTERNAL_SERVER_ERROR, err?.message as string);
-        });
-    
-    // delete image
-    fs.unlink(imagePath, (err) => {
-        throw new AppError(httpStatus.INTERNAL_SERVER_ERROR, err?.message as string);
-    });
-    
-    return uploadRes;
-};
-
-export default uploadImage;
-
-/*
-
-import { v2 as cloudinary } from "cloudinary";
-import multer from "multer";
-import config from "../config";
-import fs from "fs";
 
 cloudinary.config({
     cloud_name: config.cloudinary_cloud_name,
@@ -78,5 +35,3 @@ const uploadImage = (imagePath: string, imageName: string) => {
 };
 
 export default uploadImage;
-
-*/
