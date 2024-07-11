@@ -13,7 +13,7 @@ const router = Router();
 router.post(
     "/create-student",
     auth("admin"),
-    upload.single("file"),
+    upload.single("avatar"),
     (req: Request, res: Response, next: NextFunction) => {
         req.body = JSON.parse(req.body.data);
         next();

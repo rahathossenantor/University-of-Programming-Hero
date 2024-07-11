@@ -5,7 +5,8 @@ import httpStatus from "http-status";
 // create student
 const createStudent = catchAsync(async (req, res) => {
     const { password, student } = req.body;
-    const dbRes = await UserServices.createStudentIntoDB(password, req.file?.path as string, student);
+    const imagePath: string = req.file?.path as string;
+    const dbRes = await UserServices.createStudentIntoDB(password, imagePath, student);
 
     res.status(httpStatus.OK).json({
         success: true,
