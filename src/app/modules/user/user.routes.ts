@@ -27,6 +27,11 @@ router.post(
 router.post(
     "/create-faculty",
     auth("admin"),
+    upload.single("avatar"),
+    (req: Request, res: Response, next: NextFunction) => {
+        req.body = JSON.parse(req.body.data);
+        next();
+    },
     validateRequest(
         FacultyValidations.FacultyCreationValidationSchema
     ),
@@ -36,6 +41,11 @@ router.post(
 router.post(
     "/create-admin",
     auth("admin"),
+    upload.single("avatar"),
+    (req: Request, res: Response, next: NextFunction) => {
+        req.body = JSON.parse(req.body.data);
+        next();
+    },
     validateRequest(AdminValidations.AdminCreationValidationSchema),
     UserControllers.createAdmin
 );

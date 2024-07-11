@@ -65,7 +65,7 @@ const createStudentIntoDB = async (password: string, imagePath: string, payload:
 };
 
 // create faculty
-const createFacultyIntoDB = async (password: string, payload: TFaculty) => {
+const createFacultyIntoDB = async (password: string, imagePath: string, payload: TFaculty) => {
   const userData: Partial<TUser> = {};
   userData.password = password || config.default_pass as string;
   userData.role = "faculty";
@@ -82,6 +82,9 @@ const createFacultyIntoDB = async (password: string, payload: TFaculty) => {
 
   userData.id = await generateFacultyId();
 
+  // upload image to cloudinary
+  const uploadRes: any = await uploadImage(imagePath, `faculty-${userData.id}`);
+
   const session = await mongoose.startSession();
   try {
     session.startTransaction();
@@ -93,6 +96,7 @@ const createFacultyIntoDB = async (password: string, payload: TFaculty) => {
     }
     payload.id = user[0].id;
     payload.user = user[0]._id;
+    payload.avatar = uploadRes?.secure_url;
 
     // create faculty
     const faculty = await Faculty.create([payload], { session });
@@ -112,12 +116,15 @@ const createFacultyIntoDB = async (password: string, payload: TFaculty) => {
 };
 
 // create admin
-const createAdminIntoDB = async (password: string, payload: TAdmin) => {
+const createAdminIntoDB = async (password: string, imagePath: string, payload: TAdmin) => {
   const userData: Partial<TUser> = {};
   userData.password = password || config.default_pass as string;
   userData.role = "admin";
   userData.email = payload.email;
   userData.id = await generateAdminId();
+
+  // upload image to cloudinary
+  const uploadRes: any = await uploadImage(imagePath, `admin-${userData.id}`);
 
   const session = await mongoose.startSession();
   try {
@@ -130,6 +137,7 @@ const createAdminIntoDB = async (password: string, payload: TAdmin) => {
     }
     payload.id = user[0].id;
     payload.user = user[0]._id;
+    payload.avatar = uploadRes?.secure_url;
 
     // create admin
     const admin = await Admin.create([payload], { session });

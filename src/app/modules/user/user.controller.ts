@@ -18,7 +18,8 @@ const createStudent = catchAsync(async (req, res) => {
 // create faculty
 const createFaculty = catchAsync(async (req, res) => {
     const { password, faculty } = req.body;
-    const dbRes = await UserServices.createFacultyIntoDB(password, faculty);
+    const imagePath: string = req.file?.path as string;
+    const dbRes = await UserServices.createFacultyIntoDB(password, imagePath, faculty);
 
     res.status(httpStatus.OK).json({
         success: true,
@@ -30,7 +31,8 @@ const createFaculty = catchAsync(async (req, res) => {
 // create admin
 const createAdmin = catchAsync(async (req, res) => {
     const { password, admin } = req.body;
-    const dbRes = await UserServices.createAdminIntoDB(password, admin);
+    const imagePath: string = req.file?.path as string;
+    const dbRes = await UserServices.createAdminIntoDB(password, imagePath, admin);
 
     res.status(httpStatus.OK).json({
         success: true,
