@@ -30,7 +30,7 @@ const courseMarksSchema = new Schema<TEnrolledCourseMarks>(
             min: 0,
             max: 50,
             default: 0
-        },
+        }
     },
     {
         _id: false
