@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Model, Types } from "mongoose";
 import { TBloodGroup, TGender, TName } from "../../interface/global.interface";
 
@@ -37,9 +38,6 @@ export type TStudent = {
     isDeleted: boolean;
 };
 
-export type TStudentMethods = {
-    // eslint-disable-next-line no-unused-vars
-    isStudentExist(id: string): Promise<TStudent | null>;
-};
-
-export type TStudentModel = Model<TStudent, Record<string, never>, TStudentMethods>;
+export interface StudentModel extends Model<TStudent> {
+    isStudentExistByCustomId(id: string): Promise<TStudent>;
+}

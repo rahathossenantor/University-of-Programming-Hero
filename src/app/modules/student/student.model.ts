@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { TParents, TGuardian, TStudent, TStudentModel, TStudentMethods } from "./student.interface";
+import { TParents, TGuardian, TStudent, StudentModel } from "./student.interface";
 import AppError from "../../errors/AppError";
 import httpStatus from "http-status";
 import { nameSchema } from "../../schema/global.schema";
@@ -55,7 +55,7 @@ const guardianSchema = new Schema<TGuardian>({
     _id: false
 });
 
-const studentSchema = new Schema<TStudent, TStudentModel, TStudentMethods>({
+const studentSchema = new Schema<TStudent, StudentModel>({
     id: {
         type: String,
         unique: true
@@ -136,7 +136,7 @@ studentSchema.virtual("fullName").get(function () {
     return fullName;
 });
 
-studentSchema.methods.isUserExist = async function (id: string) {
+studentSchema.statics.isStudentExistByCustomId = async (id: string) => {
     return await Student.findOne({ id });
 };
 
@@ -171,7 +171,4 @@ studentSchema.pre("aggregate", function (next) {
     next();
 });
 
-// student model
-const Student = model<TStudent, TStudentModel>("Student", studentSchema);
-
-export { Student };
+export const Student = model<TStudent, StudentModel>("Student", studentSchema);
