@@ -114,6 +114,12 @@ const createEnrolledCourseIntoDB = async (studentId: string, payload: TEnrolledC
     }
 };
 
+// update enrolled course marks
+const updateEnrolledCourseMarksIntoDB = async (payload: Partial<TEnrolledCourse>) => {
+    return payload;
+};
+
 export const EnrolledCourseServices = {
-    createEnrolledCourseIntoDB
+    createEnrolledCourseIntoDB,
+    updateEnrolledCourseMarksIntoDB
 };
