@@ -13,6 +13,19 @@ const createEnrolledCourse = catchAsync(async (req, res) => {
     });
 });
 
+// update enrolled course marks
+const updateEnrolledCourseMarks = catchAsync(async (req, res) => {
+    console.log(req.user);
+    const dbRes = await EnrolledCourseServices.updateEnrolledCourseMarksIntoDB(req.body);
+
+    res.status(httpStatus.OK).json({
+        success: true,
+        message: "Enrolled course marks updated successfully.",
+        data: dbRes
+    });
+});
+
 export const EnrolledCourseControllers = {
-    createEnrolledCourse
+    createEnrolledCourse,
+    updateEnrolledCourseMarks
 };
