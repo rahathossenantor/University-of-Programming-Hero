@@ -17,6 +17,7 @@ export type TFaculty = {
   permanentAddress: string;
   avatar?: string;
   academicDepartment: Types.ObjectId;
+  academicFaculty: Types.ObjectId,
   isDeleted: boolean;
 };
 

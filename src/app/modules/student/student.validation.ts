@@ -90,8 +90,7 @@ export const StudentUpdatationValidationSchema = z.object({
             presentAddress: z.string().optional(),
             permanentAddress: z.string().optional(),
             parents: ParentsUpdatationSchema.optional(),
-            guardian: GuardianUpdatationSchema.optional(),
-            avatar: z.string().optional()
+            guardian: GuardianUpdatationSchema.optional()
         })
     })
 });

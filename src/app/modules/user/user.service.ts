@@ -72,10 +72,10 @@ const createFacultyIntoDB = async (password: string, imagePath: string, payload:
   const academicDepartment = await AcademicDepartment.findById(
     payload.academicDepartment,
   );
-
   if (!academicDepartment) {
     throw new AppError(httpStatus.NOT_FOUND, "Academic department does not found!");
   }
+  payload.academicFaculty = academicDepartment.academicFaculty;
 
   userData.id = await generateFacultyId();
 
