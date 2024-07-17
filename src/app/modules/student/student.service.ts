@@ -12,13 +12,13 @@ import { TName } from "../../interface/global.interface";
 const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
     const studentQuery = new QueryBuilder(
         Student.find()
-          .populate("academicSemester")
-          .populate({
-            path: "academicDepartment",
-            populate: { path: "academicFaculty" },
-          }),
+            .populate("academicSemester")
+            .populate({
+                path: "academicDepartment",
+                populate: { path: "academicFaculty" },
+            }),
         query
-      )
+    )
         .search(studentSearchableFields)
         .filter()
         .sort()
@@ -26,7 +26,8 @@ const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
         .limitFields();
 
     const dbRes = await studentQuery.modelQuery;
-    return dbRes;
+    const meta = await studentQuery.countTotal();
+    return { dbRes, meta };
 };
 
 // get single student
@@ -77,7 +78,7 @@ const deleteStudentFromDB = async (id: string) => {
     const session = await mongoose.startSession();
     try {
         session.startTransaction();
-        
+
         // delete student
         const deletedStudent = await Student.findByIdAndUpdate(
             id,

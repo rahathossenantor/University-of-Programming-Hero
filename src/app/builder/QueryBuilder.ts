@@ -56,6 +56,21 @@ class QueryBuilder<T> {
     this.modelQuery = this.modelQuery.select(fields);
     return this;
   }
+
+  async countTotal() {
+    const allQueries = this.modelQuery.getFilter();
+    const totalDocs = await this.modelQuery.model.countDocuments(allQueries);
+    const page: number = Number(this.query?.page) || 1;
+    const limit: number = Number(this.query?.limit) || 10;
+    const totalPages = Math.ceil(totalDocs / limit);
+
+    return {
+      page,
+      limit,
+      totalDocs,
+      totalPages
+    };
+  }
 }
 
 export default QueryBuilder;
