@@ -2,15 +2,15 @@ import catchAsync from "../../utils/catchAsync";
 import { UserServices } from "./user.service";
 import httpStatus from "http-status";
 
-// create student
-const createStudent = catchAsync(async (req, res) => {
-    const { password, student } = req.body;
+// create admin
+const createAdmin = catchAsync(async (req, res) => {
+    const { password, admin } = req.body;
     const imagePath: string = req.file?.path as string;
-    const dbRes = await UserServices.createStudentIntoDB(password, imagePath, student);
+    const dbRes = await UserServices.createAdminIntoDB(password, imagePath, admin);
 
     res.status(httpStatus.OK).json({
         success: true,
-        message: "Student is created successfully.",
+        message: "Admin is created successfully.",
         data: dbRes
     });
 });
@@ -28,15 +28,15 @@ const createFaculty = catchAsync(async (req, res) => {
     });
 });
 
-// create admin
-const createAdmin = catchAsync(async (req, res) => {
-    const { password, admin } = req.body;
+// create student
+const createStudent = catchAsync(async (req, res) => {
+    const { password, student } = req.body;
     const imagePath: string = req.file?.path as string;
-    const dbRes = await UserServices.createAdminIntoDB(password, imagePath, admin);
+    const dbRes = await UserServices.createStudentIntoDB(password, imagePath, student);
 
     res.status(httpStatus.OK).json({
         success: true,
-        message: "Admin is created successfully.",
+        message: "Student is created successfully.",
         data: dbRes
     });
 });

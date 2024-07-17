@@ -27,6 +27,7 @@ export type TStudent = {
     email: string;
     academicSemester: Types.ObjectId,
     academicDepartment: Types.ObjectId,
+    academicFaculty: Types.ObjectId,
     contactNo: string;
     emergencyContactNo: string;
     bloodGroup?: TBloodGroup;

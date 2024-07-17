@@ -61,7 +61,8 @@ const facultySchema = new Schema<TFaculty, FacultyModel>(
             required: true
         },
         avatar: {
-            type: String
+            type: String,
+            default: ""
         },
         isDeleted: { type: Boolean, default: false }
     },

@@ -57,7 +57,8 @@ const adminSchema = new Schema<TAdmin, AdminModel>(
       required: true
     },
     avatar: {
-      type: String
+      type: String,
+      default: ""
     },
     isDeleted: { type: Boolean, default: false }
   },
