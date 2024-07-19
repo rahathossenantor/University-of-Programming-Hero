@@ -136,6 +136,16 @@ const assignFacultiesWithCourseIntoDB = async (id: string, payload: Partial<TCou
     return dbRes;
 };
 
+// get faculties with course
+const getFacultiesWithCourseIntoDB = async (id: string) => {
+    const dbRes = await CourseFaculty.findOne({ course: id }).populate("faculties");
+
+    if (!dbRes) {
+        throw new AppError(httpStatus.NOT_FOUND, "Course does not exist!");
+    }
+    return dbRes;
+};
+
 // remove faculties from course
 const removeFacultiesFromCourseFromDB = async (id: string, payload: Partial<TCourseFaculty>) => {
     const dbRes = await CourseFaculty.findByIdAndUpdate(
@@ -158,5 +168,6 @@ export const CourseServices = {
     updateCourseIntoDB,
     deleteCourseFromDB,
     assignFacultiesWithCourseIntoDB,
-    removeFacultiesFromCourseFromDB
+    removeFacultiesFromCourseFromDB,
+    getFacultiesWithCourseIntoDB
 };
