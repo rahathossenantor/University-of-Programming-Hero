@@ -10,6 +10,7 @@ import { SemesterRegistration } from "../semesterRegistration/semesterRegistrati
 import { Course } from "../course/course.model";
 import { Faculty } from "../faculty/faculty.model";
 import { calculateGradeAndPoints } from "./enrolledCourse.utils";
+import QueryBuilder from "../../builder/QueryBuilder";
 
 // create enrolled course
 const createEnrolledCourseIntoDB = async (studentId: string, payload: TEnrolledCourse) => {
@@ -161,7 +162,7 @@ const updateEnrolledCourseMarksIntoDB = async (facultyId: string, payload: Parti
         const totalMarks = classTest1 + midTerm + classTest2 + finalTerm;
 
         const { grade, points } = calculateGradeAndPoints(totalMarks);
-        
+
         modifiedData.grade = grade;
         modifiedData.gradePoints = points;
         modifiedData.isCompleted = true;
@@ -181,7 +182,29 @@ const updateEnrolledCourseMarksIntoDB = async (facultyId: string, payload: Parti
     return dbRes;
 };
 
+// get my enrolled courses
+const getMyEnrolledCoursesFromDB = async (id: string, query: Record<string, unknown>) => {
+    const student = await Student.findOne({ id });
+    if (!student) {
+        throw new AppError(httpStatus.NOT_FOUND, "Student does not exist!");
+    }
+
+    const coursesQuery = new QueryBuilder(
+        EnrolledCourse.find({ student: student._id })
+            .populate("semesterRegistration academicSemester academicFaculty academicDepartment offeredCourse course student faculty"),
+        query
+    )
+        .filter()
+        .sort()
+        .paginate()
+        .limitFields();
+
+    const dbRes = await coursesQuery.modelQuery;
+    return dbRes;
+};
+
 export const EnrolledCourseServices = {
     createEnrolledCourseIntoDB,
-    updateEnrolledCourseMarksIntoDB
+    updateEnrolledCourseMarksIntoDB,
+    getMyEnrolledCoursesFromDB
 };
