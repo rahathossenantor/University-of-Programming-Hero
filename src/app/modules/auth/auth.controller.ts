@@ -8,7 +8,12 @@ import AppError from "../../errors/AppError";
 const loginUser = catchAsync(async (req, res) => {
     const dbRes = await AuthServices.loginUser(req.body);
     const { accessToken, refreshToken, needsPasswordChange } = dbRes;
-    res.cookie("refreshToken", refreshToken, { secure: config.node_env === "production", httpOnly: true });
+    res.cookie("refreshToken", refreshToken, {
+        secure: config.node_env === "production",
+        httpOnly: true,
+        sameSite: "none",
+        maxAge: 1000 * 60 * 60 * 24 * 365
+    });
 
     res.status(httpStatus.OK).json({
         success: true,
