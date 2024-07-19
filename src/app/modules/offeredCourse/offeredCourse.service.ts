@@ -249,7 +249,7 @@ const getMyOfferedCourseFromDB = async (id: string, query: Record<string, unknow
     const totalPages = Math.ceil(total / limit);
 
     return {
-        dbRes,
+        data: dbRes,
         meta: {
             page,
             limit,
