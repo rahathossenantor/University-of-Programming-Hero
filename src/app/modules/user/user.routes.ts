@@ -12,7 +12,7 @@ const router = Router();
 
 router.post(
     "/create-student",
-    auth("admin"),
+    auth("super-admin", "admin"),
     upload.single("avatar"),
     (req: Request, res: Response, next: NextFunction) => {
         req.body = JSON.parse(req.body.data);
@@ -26,7 +26,7 @@ router.post(
 
 router.post(
     "/create-faculty",
-    auth("admin"),
+    auth("super-admin", "admin"),
     upload.single("avatar"),
     (req: Request, res: Response, next: NextFunction) => {
         req.body = JSON.parse(req.body.data);
@@ -40,7 +40,7 @@ router.post(
 
 router.post(
     "/create-admin",
-    auth("admin"),
+    auth("super-admin", "admin"),
     upload.single("avatar"),
     (req: Request, res: Response, next: NextFunction) => {
         req.body = JSON.parse(req.body.data);
@@ -58,7 +58,7 @@ router.get(
 
 router.patch(
     "/update-status/:id",
-    auth("admin"),
+    auth("super-admin", "admin"),
     validateRequest(UserValidations.UpdateUserStatusValidationSchema),
     UserControllers.updateUserStatus
 );

@@ -2,11 +2,13 @@ import { Router } from "express";
 import { AcademicSemesterControllers } from "./academicSemester.controller";
 import validateRequest from "../../middlewares/validateRequest";
 import { AcademicSemesterValidations } from "./academicSemester.validation";
+import auth from "../../middlewares/auth";
 
 const router = Router();
 
 router.post(
     "/create-academic-semester",
+    auth("super-admin", "admin"),
     validateRequest(
         AcademicSemesterValidations.AcademicSemesterCreationValidationSchema
     ),
@@ -14,6 +16,7 @@ router.post(
 );
 router.patch(
     "/:id",
+    auth("super-admin", "admin"),
     validateRequest(
         AcademicSemesterValidations.AcademicSemesterUpdatationValidationSchema
     ),

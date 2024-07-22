@@ -8,6 +8,7 @@ const router = Router();
 
 router.post(
     "/create-offered-course",
+    auth("super-admin", "admin", "faculty"),
     validateRequest(
         OfferedCourseValidations.OfferedCourseCreationValidationSchema
     ),
@@ -22,11 +23,13 @@ router.get(
 );
 router.patch(
     "/:id",
+    auth("super-admin", "admin", "faculty"),
     validateRequest(OfferedCourseValidations.OfferedCourseUpdatationValidationSchema),
     OfferedCourseControllers.updateOfferedCourse
 );
 router.delete(
     "/:id",
+    auth("super-admin", "admin", "faculty"),
     OfferedCourseControllers.deleteOfferedCourse
 );
 

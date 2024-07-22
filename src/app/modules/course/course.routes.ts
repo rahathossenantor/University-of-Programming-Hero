@@ -3,29 +3,33 @@ import { CourseControllers } from "./course.controller";
 import validateRequest from "../../middlewares/validateRequest";
 import { CourseValidations } from "./course.validation";
 import auth from "../../middlewares/auth";
-import { userRoles } from "../user/user.constant";
-import { TUserRoles } from "../user/user.interface";
 
 const router = Router();
 
 router.post(
     "/create-course",
+    auth("super-admin", "admin"),
     validateRequest(
         CourseValidations.CourseCreationValidationSchema
     ),
     CourseControllers.createCourse
 );
-router.get("/", auth(userRoles.admin as TUserRoles, userRoles.faculty as TUserRoles, userRoles.student as TUserRoles), CourseControllers.getAllCourses);
-
+router.get("/", CourseControllers.getAllCourses);
 router.get("/:id", CourseControllers.getSingleCourse);
+
 router.patch(
     "/:id",
+    auth("super-admin", "admin"),
     validateRequest(CourseValidations.CourseUpdatationValidationSchema),
     CourseControllers.updateCourse
 );
-router.delete("/:id", CourseControllers.deleteCourse);
+router.delete("/:id",
+    auth("super-admin", "admin"),
+    CourseControllers.deleteCourse
+);
 router.put(
     "/:id/assign-faculties",
+    auth("super-admin", "admin"),
     validateRequest(CourseValidations.FacultiesWithCourseValidationSchema),
     CourseControllers.assignFacultiesWithCourse
 );
@@ -35,6 +39,7 @@ router.get(
 );
 router.delete(
     "/:id/remove-faculties",
+    auth("super-admin", "admin"),
     validateRequest(CourseValidations.FacultiesWithCourseValidationSchema),
     CourseControllers.removeFacultiesFromCourse
 );

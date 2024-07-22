@@ -17,7 +17,7 @@ router.post(
 
 router.patch(
     "/update-enrolled-course-marks",
-    auth("faculty"),
+    auth("admin", "faculty"),
     validateRequest(
         EnrolledCourseValidations.EnrolledCourseMarksUpdatationValidationSchema
     ),
