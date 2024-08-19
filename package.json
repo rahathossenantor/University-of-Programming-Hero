@@ -1,5 +1,5 @@
 {
-  "name": "University of Programming Hero",
+  "name": "university-of-programming-hero",
   "version": "1.0.0",
   "description": "",
   "main": "./dist/server.js",
