@@ -22,7 +22,10 @@ router.patch(
     ),
     AcademicFacultyControllers.updateAcademicFaculty
 );
-router.get("/", AcademicFacultyControllers.getAllAcademicFaculties);
+router.get("/",
+    auth("super-admin", "admin", "faculty"),
+    AcademicFacultyControllers.getAllAcademicFaculties
+);
 router.get("/:id", AcademicFacultyControllers.getSingleAcademicFaculty);
 
 export const AcademicFacultyRoutes = router;

@@ -22,7 +22,10 @@ router.patch(
     ),
     AcademicSemesterControllers.updateAcademicSemester
 );
-router.get("/", AcademicSemesterControllers.getAllAcademicSemesters);
+router.get("/",
+    auth("super-admin", "admin", "faculty"),
+    AcademicSemesterControllers.getAllAcademicSemesters
+);
 router.get("/:id", AcademicSemesterControllers.getSingleAcademicSemester);
 
 export const AcademicSemesterRoutes = router;

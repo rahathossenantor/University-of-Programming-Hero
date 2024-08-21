@@ -16,7 +16,7 @@ const auth = (...roles: TUserRoles[]) => {
         }
 
         // check if the token is valid
-        const decoded = verifyToken(token, config.jwt_access_secret as string);
+        const decoded = await verifyToken(token, config.jwt_access_secret as string);
 
         // validate the user
         const user = await validateUser(decoded.id);

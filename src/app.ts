@@ -10,7 +10,7 @@ const app: Application = express();
 // parsers (middlewares)
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ origin: ["*"], credentials: true }));
+app.use(cors({ origin: ["http://localhost:5173", "https://university-of-programming-hero.netlify.app"], credentials: true }));
 
 // application routes
 app.use("/api/v1", router);
