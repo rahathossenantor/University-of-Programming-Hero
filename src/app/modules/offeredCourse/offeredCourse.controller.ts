@@ -19,7 +19,7 @@ const getAllOfferedCourses = catchAsync(async (req, res) => {
 
     res.status(httpStatus.OK).json({
         success: true,
-        message: (dbRes.length ? "Offered courses are retrived successfully." : "No offered course found!"),
+        message: "Offered courses are retrived successfully.",
         data: dbRes
     });
 });

@@ -90,13 +90,18 @@ const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
 
 // get all offered courses
 const getAllOfferedCoursesFromDB = async (query: Record<string, unknown>) => {
-    const offeredCourseQuery = new QueryBuilder(OfferedCourse.find(), query)
+    const offeredCoursesQuery = new QueryBuilder(OfferedCourse.find(), query)
         .filter()
         .sort()
         .paginate();
 
-    const dbRes = await offeredCourseQuery.modelQuery;
-    return dbRes;
+    const dbRes = await offeredCoursesQuery.modelQuery;
+    const meta = await offeredCoursesQuery.countTotal();
+    
+    return {
+        data: dbRes,
+        meta
+    };
 };
 
 // get my offered course
