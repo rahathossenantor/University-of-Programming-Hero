@@ -30,11 +30,11 @@ const updateAcademicDepartment = catchAsync(async (req, res) => {
 
 // get all academic departments
 const getAllAcademicDepartments = catchAsync(async (req, res) => {
-    const dbRes = await AcademicDepartmentServices.getAllAcademicDepartmentsFromDB();
+    const dbRes = await AcademicDepartmentServices.getAllAcademicDepartmentsFromDB(req.query);
 
     res.status(httpStatus.OK).json({
         success: true,
-        message: (dbRes.length ? "Academic departments are retrived successfully." : "No academic department found!"),
+        message: "Academic departments are retrived successfully.",
         data: dbRes
     });
 });
