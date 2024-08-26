@@ -19,7 +19,7 @@ const updateAcademicDepartmentIntoDB = async (
 
 // get all academic departments
 const getAllAcademicDepartmentsFromDB = async (query: Record<string, unknown>) => {
-    const academicDepartmentQuery = new QueryBuilder(
+    const academicDepartmentsQuery = new QueryBuilder(
         AcademicDepartment.find().populate("academicFaculty"),
         query
     )
@@ -28,8 +28,8 @@ const getAllAcademicDepartmentsFromDB = async (query: Record<string, unknown>) =
         .paginate()
         .limitFields();
     
-    const dbRes = await academicDepartmentQuery.modelQuery;
-    const meta = await academicDepartmentQuery.countTotal();
+    const dbRes = await academicDepartmentsQuery.modelQuery;
+    const meta = await academicDepartmentsQuery.countTotal();
     
     return {
         data: dbRes,

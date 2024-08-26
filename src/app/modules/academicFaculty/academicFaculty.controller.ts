@@ -30,11 +30,11 @@ const updateAcademicFaculty = catchAsync(async (req, res) => {
 
 // get all academic faculties
 const getAllAcademicFaculties = catchAsync(async (req, res) => {
-    const dbRes = await AcademicFacultyServices.getAllAcademicFacultiesFromDB();
+    const dbRes = await AcademicFacultyServices.getAllAcademicFacultiesFromDB(req.query);
 
     res.status(httpStatus.OK).json({
         success: true,
-        message: (dbRes.length ? "Academic faculties are retrived successfully." : "No academic faculty found!"),
+        message: "Academic faculties are retrived successfully.",
         data: dbRes
     });
 });

@@ -1,3 +1,4 @@
+import QueryBuilder from "../../builder/QueryBuilder";
 import { TAcademicFaculty } from "./academicFaculty.interface";
 import { AcademicFaculty } from "./academicFaculty.model";
 
@@ -17,9 +18,16 @@ const updateAcademicFacultyIntoDB = async (
 };
 
 // get all academic faculties
-const getAllAcademicFacultiesFromDB = async () => {
-    const dbRes = await AcademicFaculty.find();
-    return dbRes;
+const getAllAcademicFacultiesFromDB = async (query: Record<string, unknown>) => {
+    const academicFacultiesQuery = new QueryBuilder(AcademicFaculty.find(), query);
+
+    const dbRes = await academicFacultiesQuery.modelQuery;
+    const meta = await academicFacultiesQuery.countTotal();
+    
+    return {
+        data: dbRes,
+        meta
+    };
 };
 
 // get single academic faculty

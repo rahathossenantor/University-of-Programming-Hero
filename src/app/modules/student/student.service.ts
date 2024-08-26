@@ -10,7 +10,7 @@ import { TName } from "../../interface/global.interface";
 
 // get all students
 const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
-    const studentQuery = new QueryBuilder(
+    const studentsQuery = new QueryBuilder(
         Student.find()
             .populate("academicSemester")
             .populate({
@@ -25,8 +25,8 @@ const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
         .paginate()
         .limitFields();
 
-    const dbRes = await studentQuery.modelQuery;
-    const meta = await studentQuery.countTotal();
+    const dbRes = await studentsQuery.modelQuery;
+    const meta = await studentsQuery.countTotal();
     return {
         data: dbRes,
         meta
