@@ -5,19 +5,24 @@ import AppError from "../../errors/AppError";
 import httpStatus from "http-status";
 import mongoose from "mongoose";
 import { User } from "../user/user.model";
+import { facultySearchableFields } from "./faculty.constant";
 
 // get all faculties
 const getAllFacultiesFromDB = async (query: Record<string, unknown>) => {
-  const facultySearchableFields: string[] = ["name.firstName", "email"];
-  const facultyQuery = new QueryBuilder(Faculty.find().populate("academicDepartment"), query)
+  const facultiesQuery = new QueryBuilder(Faculty.find().populate("academicDepartment"), query)
     .search(facultySearchableFields)
     .filter()
     .sort()
     .paginate()
     .limitFields();
 
-  const dbRes = await facultyQuery.modelQuery;
-  return dbRes;
+  const dbRes = await facultiesQuery.modelQuery;
+  const meta = await facultiesQuery.countTotal();
+
+  return {
+    data: dbRes,
+    meta
+  };
 };
 
 // get single faculty

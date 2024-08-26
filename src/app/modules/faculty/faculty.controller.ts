@@ -8,7 +8,7 @@ const getAllFaculties = catchAsync(async (req, res) => {
 
     res.status(httpStatus.OK).json({
         success: true,
-        message: (dbRes.length ? "Faculties are retrived successfully." : "No faculty found!"),
+        message: "Faculties are retrived successfully.",
         data: dbRes
     });
 });
