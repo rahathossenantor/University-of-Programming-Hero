@@ -27,7 +27,10 @@ const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
 
     const dbRes = await studentQuery.modelQuery;
     const meta = await studentQuery.countTotal();
-    return { dbRes, meta };
+    return {
+        data: dbRes,
+        meta
+    };
 };
 
 // get single student

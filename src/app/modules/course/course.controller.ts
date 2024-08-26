@@ -8,7 +8,7 @@ const createCourse = catchAsync(async (req, res) => {
 
     res.status(httpStatus.OK).json({
         success: true,
-        message: "Course is created.",
+        message: "Course is created succesfully.",
         data: dbRes
     });
 });

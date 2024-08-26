@@ -12,6 +12,7 @@ import { TUser } from "../user/user.interface";
 import sendEmail from "../../utils/sendEmail";
 import checkUserPassword from "../../utils/checkUserPassword";
 import hashPassword from "../../utils/hashPassword";
+import verifyToken from "../../utils/verifyToken";
 
 // login user
 const loginUser = async (payload: TLoginUser) => {
@@ -60,7 +61,7 @@ const changePassword = async (
 // get access token by refresh token
 const getAccessTokenByRefreshToken = async (refreshToken: string) => {
     // check if the token is valid
-    const decoded = jwt.verify(refreshToken, config.jwt_refresh_secret as string) as JwtPayload;
+    const decoded = await verifyToken(refreshToken, config.jwt_refresh_secret as string);
 
     // check if the user is valid
     const user: TUser = await validateUser(decoded.id);
@@ -101,7 +102,6 @@ const forgetPassword = async (id: string) => {
     return {
         resetToken
     };
-    // return null;
 };
 
 // reset password

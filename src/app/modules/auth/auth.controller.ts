@@ -56,7 +56,6 @@ const forgetPassword = catchAsync(async (req, res) => {
         success: true,
         message: "Reset password link sent successfully.",
         data: dbRes
-        // data: null
     });
 });
 

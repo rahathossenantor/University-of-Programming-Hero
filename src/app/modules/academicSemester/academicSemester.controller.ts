@@ -30,11 +30,11 @@ const updateAcademicSemester = catchAsync(async (req, res) => {
 
 // get all academic semesters
 const getAllAcademicSemesters = catchAsync(async (req, res) => {
-    const dbRes = await AcademicSemesterServices.getAllAcademicSemestersFromDB();
+    const dbRes = await AcademicSemesterServices.getAllAcademicSemestersFromDB(req.query);
 
     res.status(httpStatus.OK).json({
         success: true,
-        message: (dbRes.length ? "Academic semesters are retrived successfully." : "No academic semester found!"),
+        message: "Academic semesters are retrived successfully.",
         data: dbRes
     });
 });

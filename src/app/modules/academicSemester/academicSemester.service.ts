@@ -1,3 +1,4 @@
+import QueryBuilder from "../../builder/QueryBuilder";
 import { academicSemesterNameCodeMapper } from "./academicSemester.constant";
 import { TAcademicSemester } from "./academicSemester.interface";
 import { AcademicSemester } from "./academicSemester.model";
@@ -30,9 +31,20 @@ const updateAcademicSemesterIntoDB = async (
 };
 
 // get all academic semesters
-const getAllAcademicSemestersFromDB = async () => {
-    const dbRes = await AcademicSemester.find();
-    return dbRes;
+const getAllAcademicSemestersFromDB = async (query: Record<string, unknown>) => {
+    const academicSemesterQuery = new QueryBuilder(AcademicSemester.find(), query)
+        .filter()
+        .sort()
+        .paginate()
+        .limitFields();
+
+    const dbRes = await academicSemesterQuery.modelQuery;
+    const meta = await academicSemesterQuery.countTotal();
+
+    return {
+        data: dbRes,
+        meta
+    };
 };
 
 // get single academic semester
