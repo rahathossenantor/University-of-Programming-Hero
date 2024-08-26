@@ -52,7 +52,12 @@ const getAllSemesterRegistrationsFromDB = async (query: Record<string, unknown>)
         .limitFields();
 
     const dbRes = await semsterRagistrationsQuery.modelQuery;
-    return dbRes;
+    const meta = await semsterRagistrationsQuery.countTotal();
+
+    return {
+        data: dbRes,
+        meta
+    };
 };
 
 // get single semster ragistration

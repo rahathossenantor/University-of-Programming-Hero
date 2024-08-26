@@ -19,7 +19,7 @@ const getAllSemesterRegistrations = catchAsync(async (req, res) => {
 
     res.status(httpStatus.OK).json({
         success: true,
-        message: (dbRes.length ? "Semester registrations are retrived successfully." : "No semester registration found!"),
+        message: "Semester registrations are retrived successfully.",
         data: dbRes
     });
 });
