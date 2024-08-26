@@ -30,7 +30,7 @@ const getMyEnrolledCourses = catchAsync(async (req, res) => {
 
     res.status(httpStatus.OK).json({
         success: true,
-        message: "My enrolled courses retrived successfully.",
+        message: (dbRes.data.length ? "My enrolled courses are retrived successfully." : "No enrolled course found!"),
         data: dbRes
     });
 });

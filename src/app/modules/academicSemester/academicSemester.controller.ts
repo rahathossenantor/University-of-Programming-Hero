@@ -34,7 +34,7 @@ const getAllAcademicSemesters = catchAsync(async (req, res) => {
 
     res.status(httpStatus.OK).json({
         success: true,
-        message: "Academic semesters are retrived successfully.",
+        message: (dbRes.data.length ? "Academic semesters are retrived successfully." : "No academic semester found."),
         data: dbRes
     });
 });
