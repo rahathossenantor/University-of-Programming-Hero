@@ -5,10 +5,10 @@ import AppError from "../../errors/AppError";
 import httpStatus from "http-status";
 import mongoose from "mongoose";
 import { User } from "../user/user.model";
+import { adminSearchableFields } from "./admin.constant";
 
 // get all admins
 const getAllAdminsFromDB = async (query: Record<string, unknown>) => {
-  const adminSearchableFields: string[] = ["id", "name.firstName", "name.middleName", "name.lastName", "email", "contactNo", "emergencyContactNo"];
   const adminQuery = new QueryBuilder(Admin.find(), query)
     .search(adminSearchableFields)
     .filter()
@@ -17,7 +17,12 @@ const getAllAdminsFromDB = async (query: Record<string, unknown>) => {
     .limitFields();
 
   const dbRes = await adminQuery.modelQuery;
-  return dbRes;
+  const meta = await adminQuery.countTotal();
+
+  return {
+    data: dbRes,
+    meta
+  };
 };
 
 // get single admin
