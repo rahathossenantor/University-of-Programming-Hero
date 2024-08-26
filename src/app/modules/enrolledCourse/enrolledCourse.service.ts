@@ -200,7 +200,12 @@ const getMyEnrolledCoursesFromDB = async (id: string, query: Record<string, unkn
         .limitFields();
 
     const dbRes = await coursesQuery.modelQuery;
-    return dbRes;
+    const meta = await coursesQuery.countTotal();
+
+    return {
+        data: dbRes,
+        meta
+    };
 };
 
 export const EnrolledCourseServices = {
