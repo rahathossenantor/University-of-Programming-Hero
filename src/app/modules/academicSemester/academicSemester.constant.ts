@@ -6,7 +6,7 @@ export const months: TMonths[] = [
     "March",
     "April",
     "May",
-    "Jun",
+    "June",
     "July",
     "August",
     "September",

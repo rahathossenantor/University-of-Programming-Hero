@@ -4,7 +4,7 @@ export type TMonths =
     | "March"
     | "April"
     | "May"
-    | "Jun"
+    | "June"
     | "July"
     | "August"
     | "September"
