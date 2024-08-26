@@ -9,15 +9,15 @@ import { adminSearchableFields } from "./admin.constant";
 
 // get all admins
 const getAllAdminsFromDB = async (query: Record<string, unknown>) => {
-  const adminQuery = new QueryBuilder(Admin.find(), query)
+  const adminsQuery = new QueryBuilder(Admin.find(), query)
     .search(adminSearchableFields)
     .filter()
     .sort()
     .paginate()
     .limitFields();
 
-  const dbRes = await adminQuery.modelQuery;
-  const meta = await adminQuery.countTotal();
+  const dbRes = await adminsQuery.modelQuery;
+  const meta = await adminsQuery.countTotal();
 
   return {
     data: dbRes,

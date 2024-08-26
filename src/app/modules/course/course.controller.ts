@@ -19,7 +19,7 @@ const getAllCourses = catchAsync(async (req, res) => {
 
     res.status(httpStatus.OK).json({
         success: true,
-        message: (dbRes.length ? "Courses are retrived successfully." : "No course found!"),
+        message: "Courses are retrived successfully.",
         data: dbRes
     });
 });

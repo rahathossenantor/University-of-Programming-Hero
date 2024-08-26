@@ -4,6 +4,7 @@ import { Course, CourseFaculty } from "./course.model";
 import { TCourse, TCourseFaculty } from "./course.interface";
 import QueryBuilder from "../../builder/QueryBuilder";
 import mongoose from "mongoose";
+import { courseSearchableFields } from "./course.constant";
 
 // create a new course
 const createCourseIntoDB = async (payload: TCourse) => {
@@ -13,16 +14,20 @@ const createCourseIntoDB = async (payload: TCourse) => {
 
 // get all courses
 const getAllCoursesFromDB = async (query: Record<string, unknown>) => {
-    const courseSearchableFields: string[] = ["title", "prefix", "code"];
-    const courseQuery = new QueryBuilder(Course.find().populate("preRequisiteCourses.course"), query)
+    const coursesQuery = new QueryBuilder(Course.find().populate("preRequisiteCourses.course"), query)
         .search(courseSearchableFields)
         .filter()
         .sort()
         .paginate()
         .limitFields();
 
-    const dbRes = await courseQuery.modelQuery;
-    return dbRes;
+    const dbRes = await coursesQuery.modelQuery;
+    const meta = await coursesQuery.countTotal();
+
+    return {
+        data: dbRes,
+        meta
+    };
 };
 
 // get single course
