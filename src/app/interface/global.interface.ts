@@ -4,7 +4,7 @@ export type TName = {
     lastName: string;
 };
 
-export type TGender = "male" | "female" | "other";
+export type TGender = "Male" | "Female" | "Other";
 
 export type TBloodGroup =
     | "A"

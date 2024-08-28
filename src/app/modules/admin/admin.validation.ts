@@ -11,7 +11,7 @@ export const AdminCreationValidationSchema = z.object({
         password: z.string(),
         admin: z.object({
             name: NameCreationSchema,
-            gender: z.enum(["male", "female", "other"]),
+            gender: z.enum(["Male", "Female", "Other"]),
             designation: z.string(),
             dateOfBirth: z.string(),
             email: z.string().email(),
@@ -35,7 +35,7 @@ export const AdminUpdatationValidationSchema = z.object({
     body: z.object({
         admin: z.object({
             name: NameUpdatationSchema.optional(),
-            gender: z.enum(["male", "female", "other"]).optional(),
+            gender: z.enum(["Male", "Female", "Other"]).optional(),
             designation: z.string().optional(),
             dateOfBirth: z.string().optional(),
             email: z.string().email().optional(),

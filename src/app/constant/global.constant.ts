@@ -1,4 +1,4 @@
-export const genders = ["male", "female", "other"];
+export const genders = ["Male", "Female", "Other"];
 export const bloodGroupes = [
     "A",
     "B",
