@@ -16,21 +16,167 @@ import AppError from "../../errors/AppError";
 import httpStatus from "http-status";
 import { AcademicDepartment } from "../academicDepartment/academicDepartment.model";
 import { JwtPayload } from "jsonwebtoken";
-import uploadImage from "../../utils/uploadImage";
+// import uploadImage from "../../utils/uploadImage";
 
+// with image upload utility
 // create admin
-const createAdminIntoDB = async (password: string, imagePath: string, payload: TAdmin) => {
+// const createAdminIntoDB = async (password: string, imagePath: string, payload: TAdmin) => {
+//   const userData: Partial<TUser> = {};
+//   userData.password = password || config.default_pass as string;
+//   userData.role = "admin";
+//   userData.email = payload.email;
+//   userData.id = await generateAdminId();
+
+//   if (imagePath) {
+//     // upload image to cloudinary
+//     const uploadRes: any = await uploadImage(imagePath, `admin-${userData.id}`);
+//     payload.avatar = uploadRes?.secure_url;
+//   }
+
+//   const session = await mongoose.startSession();
+//   try {
+//     session.startTransaction();
+//     // create user
+//     const user = await User.create([userData], { session });
+
+//     if (!user.length) {
+//       throw new AppError(httpStatus.BAD_REQUEST, "Failed to create user!");
+//     }
+//     payload.id = user[0].id;
+//     payload.user = user[0]._id;
+
+//     // create admin
+//     const admin = await Admin.create([payload], { session });
+
+//     if (!admin.length) {
+//       throw new AppError(httpStatus.BAD_REQUEST, "Failed to create admin!");
+//     }
+
+//     await session.commitTransaction();
+//     await session.endSession();
+//     return admin;
+//   } catch (err) {
+//     await session.abortTransaction();
+//     await session.endSession();
+//     throw new Error("Failed to create admin!");
+//   }
+// };
+
+// create faculty
+// const createFacultyIntoDB = async (password: string, imagePath: string, payload: TFaculty) => {
+//   const userData: Partial<TUser> = {};
+//   userData.password = password || config.default_pass as string;
+//   userData.role = "faculty";
+//   userData.email = payload.email;
+
+//   // find academic department info
+//   const academicDepartment = await AcademicDepartment.findById(
+//     payload.academicDepartment,
+//   );
+//   if (!academicDepartment) {
+//     throw new AppError(httpStatus.NOT_FOUND, "Academic department does not found!");
+//   }
+//   payload.academicFaculty = academicDepartment.academicFaculty;
+
+//   userData.id = await generateFacultyId();
+
+//   if (imagePath) {
+//     // upload image to cloudinary
+//     const uploadRes: any = await uploadImage(imagePath, `faculty-${userData.id}`);
+//     payload.avatar = uploadRes?.secure_url;
+//   }
+
+//   const session = await mongoose.startSession();
+//   try {
+//     session.startTransaction();
+//     // create user
+//     const user = await User.create([userData], { session });
+
+//     if (!user.length) {
+//       throw new AppError(httpStatus.BAD_REQUEST, "Failed to create user!");
+//     }
+//     payload.id = user[0].id;
+//     payload.user = user[0]._id;
+
+//     // create faculty
+//     const faculty = await Faculty.create([payload], { session });
+
+//     if (!faculty.length) {
+//       throw new AppError(httpStatus.BAD_REQUEST, "Failed to create faculty!");
+//     }
+
+//     await session.commitTransaction();
+//     await session.endSession();
+//     return faculty;
+//   } catch (err) {
+//     await session.abortTransaction();
+//     await session.endSession();
+//     throw new Error("Failed to create faculty!");
+//   }
+// };
+
+// create student
+// const createStudentIntoDB = async (password: string, imagePath: string, payload: TStudent) => {
+//   const userData: Partial<TUser> = {};
+//   userData.password = password || config.default_pass as string;
+//   userData.role = "student";
+//   userData.email = payload.email;
+
+//   // get academic semester data for generating student id
+//   const academicSemester = await AcademicSemester.findById(payload.academicSemester);
+//   if (!academicSemester) {
+//     throw new AppError(httpStatus.NOT_FOUND, "Academic semester does not found!");
+//   }
+
+//   // get academic department
+//   const academicDepartment = await AcademicDepartment.findById(payload.academicDepartment);
+//   if (!academicDepartment) {
+//     throw new AppError(httpStatus.NOT_FOUND, "Academic department does not found!");
+//   }
+//   payload.academicFaculty = academicDepartment.academicFaculty;
+
+//   userData.id = await generateStudentId(academicSemester as TAcademicSemester);
+
+//   if (imagePath) {
+//     // upload image to cloudinary
+//     const uploadRes: any = await uploadImage(imagePath, `student-${userData.id}`);
+//     payload.avatar = uploadRes?.secure_url;
+//   }
+
+//   const session = await mongoose.startSession();
+//   try {
+//     session.startTransaction();
+//     // create user
+//     const user = await User.create([userData], { session });
+//     if (!user.length) {
+//       throw new AppError(httpStatus.BAD_REQUEST, "Failed to create user!");
+//     }
+//     payload.id = user[0].id;
+//     payload.user = user[0]._id;
+
+//     // create student
+//     const student = await Student.create([payload], { session });
+//     if (!student.length) {
+//       throw new AppError(httpStatus.BAD_REQUEST, "Failed to create student!");
+//     }
+//     await session.commitTransaction();
+//     await session.endSession();
+//     return student;
+//   } catch (err) {
+//     await session.abortTransaction();
+//     await session.endSession();
+//     throw new Error("Failed to create student!");
+//   }
+// };
+
+// without image upload utility
+// create admin
+const createAdminIntoDB = async (password: string, payload: TAdmin) => {
   const userData: Partial<TUser> = {};
   userData.password = password || config.default_pass as string;
   userData.role = "admin";
   userData.email = payload.email;
   userData.id = await generateAdminId();
-
-  if (imagePath) {
-    // upload image to cloudinary
-    const uploadRes: any = await uploadImage(imagePath, `admin-${userData.id}`);
-    payload.avatar = uploadRes?.secure_url;
-  }
 
   const session = await mongoose.startSession();
   try {
@@ -62,7 +208,7 @@ const createAdminIntoDB = async (password: string, imagePath: string, payload: T
 };
 
 // create faculty
-const createFacultyIntoDB = async (password: string, imagePath: string, payload: TFaculty) => {
+const createFacultyIntoDB = async (password: string, payload: TFaculty) => {
   const userData: Partial<TUser> = {};
   userData.password = password || config.default_pass as string;
   userData.role = "faculty";
@@ -78,12 +224,6 @@ const createFacultyIntoDB = async (password: string, imagePath: string, payload:
   payload.academicFaculty = academicDepartment.academicFaculty;
 
   userData.id = await generateFacultyId();
-
-  if (imagePath) {
-    // upload image to cloudinary
-    const uploadRes: any = await uploadImage(imagePath, `faculty-${userData.id}`);
-    payload.avatar = uploadRes?.secure_url;
-  }
 
   const session = await mongoose.startSession();
   try {
@@ -115,7 +255,7 @@ const createFacultyIntoDB = async (password: string, imagePath: string, payload:
 };
 
 // create student
-const createStudentIntoDB = async (password: string, imagePath: string, payload: TStudent) => {
+const createStudentIntoDB = async (password: string, payload: TStudent) => {
   const userData: Partial<TUser> = {};
   userData.password = password || config.default_pass as string;
   userData.role = "student";
@@ -135,12 +275,6 @@ const createStudentIntoDB = async (password: string, imagePath: string, payload:
   payload.academicFaculty = academicDepartment.academicFaculty;
 
   userData.id = await generateStudentId(academicSemester as TAcademicSemester);
-
-  if (imagePath) {
-    // upload image to cloudinary
-    const uploadRes: any = await uploadImage(imagePath, `student-${userData.id}`);
-    payload.avatar = uploadRes?.secure_url;
-  }
 
   const session = await mongoose.startSession();
   try {

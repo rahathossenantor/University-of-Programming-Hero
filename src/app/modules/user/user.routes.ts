@@ -1,4 +1,5 @@
-import { NextFunction, Request, Response, Router } from "express";
+import { Router } from "express";
+// import { NextFunction, Request, Response, Router } from "express";
 import { UserControllers } from "./user.controller";
 import { StudentValidations } from "../student/student.validation";
 import { FacultyValidations } from "../faculty/faculty.validation";
@@ -6,18 +7,55 @@ import { AdminValidations } from "../admin/admin.validation";
 import validateRequest from "../../middlewares/validateRequest";
 import auth from "../../middlewares/auth";
 import { UserValidations } from "./user.validation";
-import { upload } from "../../utils/uploadImage";
+// import { upload } from "../../utils/uploadImage";
 
 const router = Router();
 
+// with image upload utility
+// router.post(
+//     "/create-admin",
+//     auth("super-admin", "admin"),
+//     upload.single("file"),
+//     (req: Request, res: Response, next: NextFunction) => {
+//         req.body = JSON.parse(req.body.data);
+//         next();
+//     },
+//     validateRequest(AdminValidations.AdminCreationValidationSchema),
+//     UserControllers.createAdmin
+// );
+
+// router.post(
+//     "/create-faculty",
+//     auth("super-admin", "admin"),
+//     upload.single("file"),
+//     (req: Request, res: Response, next: NextFunction) => {
+//         req.body = JSON.parse(req.body.data);
+//         next();
+//     },
+//     validateRequest(
+//         FacultyValidations.FacultyCreationValidationSchema
+//     ),
+//     UserControllers.createFaculty
+// );
+
+// router.post(
+//     "/create-student",
+//     auth("super-admin", "admin"),
+//     upload.single("file"),
+//     (req: Request, res: Response, next: NextFunction) => {
+//         req.body = JSON.parse(req.body.data);
+//         next();
+//     },
+//     validateRequest(
+//         StudentValidations.StudentCreationValidationSchema
+//     ),
+//     UserControllers.createStudent
+// );
+
+// without image upload utility
 router.post(
     "/create-student",
     auth("super-admin", "admin"),
-    upload.single("avatar"),
-    (req: Request, res: Response, next: NextFunction) => {
-        req.body = JSON.parse(req.body.data);
-        next();
-    },
     validateRequest(
         StudentValidations.StudentCreationValidationSchema
     ),
@@ -27,11 +65,6 @@ router.post(
 router.post(
     "/create-faculty",
     auth("super-admin", "admin"),
-    upload.single("avatar"),
-    (req: Request, res: Response, next: NextFunction) => {
-        req.body = JSON.parse(req.body.data);
-        next();
-    },
     validateRequest(
         FacultyValidations.FacultyCreationValidationSchema
     ),
@@ -41,11 +74,6 @@ router.post(
 router.post(
     "/create-admin",
     auth("super-admin", "admin"),
-    upload.single("avatar"),
-    (req: Request, res: Response, next: NextFunction) => {
-        req.body = JSON.parse(req.body.data);
-        next();
-    },
     validateRequest(AdminValidations.AdminCreationValidationSchema),
     UserControllers.createAdmin
 );

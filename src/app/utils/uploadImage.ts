@@ -9,17 +9,20 @@ cloudinary.config({
     api_secret: config.cloudinary_api_secret
 });
 
+// initialze storage
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, process.cwd() + "/uploads/");
     },
     filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1E9);
-        cb(null, file.fieldname + "-" + uniqueSuffix);
+        const uniqueSuffix = Date.now() + "_" + Math.round(Math.random() * 1E9);
+        cb(null, file.fieldname + "_" + uniqueSuffix);
     }
 });
+
 export const upload = multer({ storage });
 
+// upload to cloudinary
 const uploadImage = (imagePath: string, imageName: string) => {
     return new Promise((resolve, reject) => {
         cloudinary.uploader.upload(imagePath, { public_id: imageName }, (err, res) => {

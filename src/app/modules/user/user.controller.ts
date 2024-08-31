@@ -2,11 +2,51 @@ import catchAsync from "../../utils/catchAsync";
 import { UserServices } from "./user.service";
 import httpStatus from "http-status";
 
+// with image upload utility
+// create admin
+// const createAdmin = catchAsync(async (req, res) => {
+//     const { password, admin } = req.body;
+//     const imagePath: string = req.file?.path as string;
+//     const dbRes = await UserServices.createAdminIntoDB(password, imagePath, admin);
+
+//     res.status(httpStatus.OK).json({
+//         success: true,
+//         message: "Admin is created successfully.",
+//         data: dbRes
+//     });
+// });
+
+// create faculty
+// const createFaculty = catchAsync(async (req, res) => {
+//     const { password, faculty } = req.body;
+//     const imagePath: string = req.file?.path as string;
+//     const dbRes = await UserServices.createFacultyIntoDB(password, imagePath, faculty);
+
+//     res.status(httpStatus.OK).json({
+//         success: true,
+//         message: "Faculty is created successfully.",
+//         data: dbRes
+//     });
+// });
+
+// create student
+// const createStudent = catchAsync(async (req, res) => {
+//     const { password, student } = req.body;
+//     const imagePath: string = req.file?.path as string;
+//     const dbRes = await UserServices.createStudentIntoDB(password, imagePath, student);
+
+//     res.status(httpStatus.OK).json({
+//         success: true,
+//         message: "Student is created successfully.",
+//         data: dbRes
+//     });
+// });
+
+// without image upload utility
 // create admin
 const createAdmin = catchAsync(async (req, res) => {
     const { password, admin } = req.body;
-    const imagePath: string = req.file?.path as string;
-    const dbRes = await UserServices.createAdminIntoDB(password, imagePath, admin);
+    const dbRes = await UserServices.createAdminIntoDB(password, admin);
 
     res.status(httpStatus.OK).json({
         success: true,
@@ -18,8 +58,7 @@ const createAdmin = catchAsync(async (req, res) => {
 // create faculty
 const createFaculty = catchAsync(async (req, res) => {
     const { password, faculty } = req.body;
-    const imagePath: string = req.file?.path as string;
-    const dbRes = await UserServices.createFacultyIntoDB(password, imagePath, faculty);
+    const dbRes = await UserServices.createFacultyIntoDB(password, faculty);
 
     res.status(httpStatus.OK).json({
         success: true,
@@ -31,8 +70,7 @@ const createFaculty = catchAsync(async (req, res) => {
 // create student
 const createStudent = catchAsync(async (req, res) => {
     const { password, student } = req.body;
-    const imagePath: string = req.file?.path as string;
-    const dbRes = await UserServices.createStudentIntoDB(password, imagePath, student);
+    const dbRes = await UserServices.createStudentIntoDB(password, student);
 
     res.status(httpStatus.OK).json({
         success: true,
