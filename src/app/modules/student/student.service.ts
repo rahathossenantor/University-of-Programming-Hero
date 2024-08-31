@@ -13,6 +13,7 @@ const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
     const studentsQuery = new QueryBuilder(
         Student.find()
             .populate("academicSemester")
+            .populate("academicFaculty")
             .populate({
                 path: "academicDepartment",
                 populate: { path: "academicFaculty" },
