@@ -54,12 +54,10 @@ const router = Router();
 
 // without image upload utility
 router.post(
-    "/create-student",
+    "/create-admin",
     auth("super-admin", "admin"),
-    validateRequest(
-        StudentValidations.StudentCreationValidationSchema
-    ),
-    UserControllers.createStudent
+    validateRequest(AdminValidations.AdminCreationValidationSchema),
+    UserControllers.createAdmin
 );
 
 router.post(
@@ -72,10 +70,12 @@ router.post(
 );
 
 router.post(
-    "/create-admin",
+    "/create-student",
     auth("super-admin", "admin"),
-    validateRequest(AdminValidations.AdminCreationValidationSchema),
-    UserControllers.createAdmin
+    validateRequest(
+        StudentValidations.StudentCreationValidationSchema
+    ),
+    UserControllers.createStudent
 );
 
 router.get(

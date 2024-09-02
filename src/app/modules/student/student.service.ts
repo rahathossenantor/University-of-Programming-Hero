@@ -38,6 +38,7 @@ const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
 const getSingleStudentFromDB = async (id: string) => {
     const dbRes = await Student.findById(id)
         .populate("academicSemester")
+        .populate("academicFaculty")
         .populate(
             {
                 path: "academicDepartment",

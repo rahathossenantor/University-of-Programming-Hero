@@ -172,6 +172,13 @@ import { JwtPayload } from "jsonwebtoken";
 // without image upload utility
 // create admin
 const createAdminIntoDB = async (password: string, payload: TAdmin) => {
+  const existingAdmin = await Admin.findOne({
+    email: payload.email
+  });
+  if (existingAdmin) {
+    throw new AppError(httpStatus.CONFLICT, "Admin already exists!");
+  }
+
   const userData: Partial<TUser> = {};
   userData.password = password || config.default_pass as string;
   userData.role = "admin";
@@ -209,6 +216,21 @@ const createAdminIntoDB = async (password: string, payload: TAdmin) => {
 
 // create faculty
 const createFacultyIntoDB = async (password: string, payload: TFaculty) => {
+  const existingFaculty = await Faculty.findOne({
+    $or: [
+      {
+        email: payload.email,
+        academicDepartment: payload.academicDepartment
+      },
+      {
+        academicDepartment: payload.academicDepartment
+      },
+    ]
+  });
+  if (existingFaculty) {
+    throw new AppError(httpStatus.CONFLICT, "There is already a faculty in this department!");
+  }
+
   const userData: Partial<TUser> = {};
   userData.password = password || config.default_pass as string;
   userData.role = "faculty";
