@@ -68,7 +68,7 @@ const assignFacultiesWithCourse = catchAsync(async (req, res) => {
 
     res.status(httpStatus.OK).json({
         success: true,
-        message: "Faculties assigned successfully.",
+        message: "Faculties are assigned successfully.",
         data: dbRes
     });
 });
@@ -80,7 +80,7 @@ const getFacultiesWithCourse = catchAsync(async (req, res) => {
 
     res.status(httpStatus.OK).json({
         success: true,
-        message: "Faculties are retrived successfully.",
+        message: "Faculties with course are retrived successfully.",
         data: dbRes
     });
 });

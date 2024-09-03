@@ -28,13 +28,13 @@ router.delete("/:id",
     CourseControllers.deleteCourse
 );
 router.put(
-    "/:id/assign-faculties",
+    "/assign-faculties/:id",
     auth("super-admin", "admin"),
     validateRequest(CourseValidations.FacultiesWithCourseValidationSchema),
     CourseControllers.assignFacultiesWithCourse
 );
 router.get(
-    "/:id/get-faculties",
+    "/get-faculties/:id",
     CourseControllers.getFacultiesWithCourse
 );
 router.delete(

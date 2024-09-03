@@ -11,7 +11,7 @@
     "lint:fix": "npx eslint src --fix",
     "prettier": "prettier --ignore-path .gitignore --write \"./src/**/*.+(js|ts|json)\"",
     "prettier:fix": "npx prettier --write ./src",
-    "deploy": "vercel --prod"
+    "deploy": "tsc && vercel --prod"
   },
   "keywords": [],
   "author": "Md Rahat Hossen Antor",
