@@ -69,6 +69,11 @@ const adminSchema = new Schema<TAdmin, AdminModel>(
   }
 );
 
+adminSchema.virtual("fullName").get(function () {
+  const fullName: string = `${this.name?.firstName}${this.name?.middleName && ` ${this.name?.middleName}`} ${this.name?.lastName}`;
+  return fullName;
+});
+
 adminSchema.pre("find", function (next) {
   this.find({ isDeleted: { $ne: true } });
   next();
