@@ -16,7 +16,8 @@ export const nameSchema = new Schema<TName>({
         }
     },
     middleName: {
-        type: String
+        type: String,
+        default: ""
     },
     lastName: {
         type: String,

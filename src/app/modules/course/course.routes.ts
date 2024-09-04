@@ -35,6 +35,7 @@ router.put(
 );
 router.get(
     "/get-faculties/:id",
+    auth("super-admin", "admin", "student"),
     CourseControllers.getFacultiesWithCourse
 );
 router.delete(
