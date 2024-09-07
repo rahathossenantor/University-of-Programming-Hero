@@ -15,12 +15,12 @@ router.post(
     OfferedCourseControllers.createOfferedCourse
 );
 router.get("/", OfferedCourseControllers.getAllOfferedCourses);
-router.get("/:id", OfferedCourseControllers.getSingleOfferedCourse);
 router.get(
     "/get-my-offered-courses",
     auth("student"),
     OfferedCourseControllers.getMyOfferedCourse
 );
+router.get("/:id", OfferedCourseControllers.getSingleOfferedCourse);
 router.patch(
     "/:id",
     auth("super-admin", "admin", "faculty"),

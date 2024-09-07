@@ -36,6 +36,10 @@ const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
     };
 
     const semesterReg = await checkField(SemesterRegistration, semesterRegistration, "Semester registration");
+    if (semesterReg.status === "ENDED") {
+        throw new AppError(httpStatus.NOT_ACCEPTABLE, `This semester registration is already ${semesterReg.status}!`);
+    }
+
     const academicSemester = semesterReg.academicSemester;
     const acadmcDepartment = await checkField(AcademicDepartment, academicDepartment, "Academic department");
     const acadmcFaculty = await checkField(AcademicFaculty, academicFaculty, "Academic faculty");
@@ -97,7 +101,7 @@ const getAllOfferedCoursesFromDB = async (query: Record<string, unknown>) => {
 
     const dbRes = await offeredCoursesQuery.modelQuery;
     const meta = await offeredCoursesQuery.countTotal();
-    
+
     return {
         data: dbRes,
         meta
@@ -130,6 +134,65 @@ const getMyOfferedCourseFromDB = async (id: string, query: Record<string, unknow
             $limit: limit
         }
     ];
+
+    // const populateQuery = [
+    //     {
+    //         $lookup: {
+    //             from: "semesterregistrations",
+    //             localField: "semesterRegistration",
+    //             foreignField: "_id",
+    //             as: "semesterRegistration"
+    //         }
+    //     },
+    //     {
+    //         $unwind: "$semesterRegistration"
+    //     },
+    //     {
+    //         $lookup: {
+    //             from: "academicsemesters",
+    //             localField: "academicSemester",
+    //             foreignField: "_id",
+    //             as: "academicSemester"
+    //         }
+    //     },
+    //     {
+    //         $unwind: "$academicSemester"
+    //     },
+    //     {
+    //         $lookup: {
+    //             from: "academicfaculties",
+    //             localField: "academicFaculty",
+    //             foreignField: "_id",
+    //             as: "academicFaculty"
+    //         }
+    //     },
+    //     {
+    //         $unwind: "$academicFaculty"
+    //     },
+    //     {
+    //         $lookup: {
+    //             from: "academicdepartments",
+    //             localField: "academicDepartment",
+    //             foreignField: "_id",
+    //             as: "academicDepartment"
+    //         }
+    //     },
+    //     {
+    //         $unwind: "$academicDepartment"
+    //     },
+    //     {
+    //         $lookup: {
+    //             from: "faculties",
+    //             localField: "faculty",
+    //             foreignField: "_id",
+    //             as: "faculty"
+    //         }
+    //     },
+    //     {
+    //         $unwind: "$faculty"
+    //     },
+    // ];
+
     const aggregationQuery = [
         {
             $match: {
@@ -147,7 +210,7 @@ const getMyOfferedCourseFromDB = async (id: string, query: Record<string, unknow
             }
         },
         {
-            $unwind: "course"
+            $unwind: "$course"
         },
         {
             $lookup: {
@@ -252,15 +315,16 @@ const getMyOfferedCourseFromDB = async (id: string, query: Record<string, unknow
 
     const total: number = (await OfferedCourse.aggregate(aggregationQuery)).length;
     const totalPages = Math.ceil(total / limit);
+    const meta = {
+        page,
+        limit,
+        totalDocs: total,
+        totalPages
+    };
 
     return {
-        data: dbRes,
-        meta: {
-            page,
-            limit,
-            totalDocs: total,
-            totalPages
-        }
+        data: await dbRes,
+        meta
     };
 };
 
