@@ -33,7 +33,10 @@ const getAllFacultiesFromDB = async (query: Record<string, unknown>) => {
 
 // get single faculty
 const getSingleFacultyFromDB = async (id: string) => {
-  const dbRes = await Faculty.findById(id).populate("academicDepartment");
+  const dbRes = await Faculty.findById(id)
+    .populate("user")
+    .populate("academicFaculty")
+    .populate("academicDepartment");
 
   if (!dbRes) {
     throw new AppError(httpStatus.NOT_FOUND, "Faculty does not exist!");

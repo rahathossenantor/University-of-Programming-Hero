@@ -197,8 +197,8 @@ const getMyOfferedCourseFromDB = async (id: string, query: Record<string, unknow
         {
             $match: {
                 semesterRegistration: semesterRegistration._id,
-                academicDepartment: student.academicDepartment,
-                academicFaculty: student.academicFaculty
+                // academicDepartment: student.academicDepartment,
+                // academicFaculty: student.academicFaculty
             }
         },
         {
