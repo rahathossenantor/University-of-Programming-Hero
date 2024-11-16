@@ -16,7 +16,7 @@ app.use(cors({ origin: ["http://localhost:5173", "https://university-of-programm
 app.use("/api/v1", router);
 
 app.get("/", (req: Request, res: Response) => {
-  res.send("Welcome to The University of Programming Hero");
+  res.send("Welcome to The University of Programming Hero!");
 });
 
 // global error handler
